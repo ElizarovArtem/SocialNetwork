@@ -51,6 +51,7 @@ export let state: RootStateType = {
             {name: "Misha"},
             {name: "Misha"},
             {name: "Misha"},
+            {name: "Natan"},
             {name: "Natan"}
         ]
     }
