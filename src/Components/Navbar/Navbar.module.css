@@ -1,0 +1,28 @@
+.nav{
+    grid-area: n;
+    background-color: cyan;
+}
+.item{
+    line-height: 2;
+    text-align: center;
+    color: darkgreen;
+}
+
+.item a{
+    color: hotpink;
+    text-decoration: none;
+}
+.item a.active{
+    color: yellow;
+}
+.friends{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-content: space-around;
+    text-align: center;
+}
+
+.nav h3{
+    padding-left: 15px;
+}
