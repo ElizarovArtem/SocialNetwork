@@ -17,6 +17,7 @@ function App(props: AppPropsType) {
     return (
             <div className="app-wrapper">
                 <Header/>
+
                 <Navbar friends={props.state.sidebar.friends}/>
                 <div className="app-wrapper-content">
                     <Route render={() => <Profile profileState={props.state.profilePage}
