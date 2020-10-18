@@ -27,16 +27,15 @@ type storeType = {
     changeNewPostText: (newText: string) => void
     subscribe: (observer: (state: RootStateType) => void ) => void
     _callSubscriber: (state: RootStateType) => void
-    dispatch: (action: AddPostActionType | ChangeNewPostTextActionType) => void
-}
-export type AddPostActionType = {
-    type: "ADD-POST"
-}
-export type ChangeNewPostTextActionType = {
-    type: "CHANGE-NEW-POST-TEXT"
-    newText: string
+    dispatch: (action: ActionTypes) => void
 }
 
+type AddPostActionType = ReturnType<typeof AddPostActionCreator>
+type ChangeNewPostTextActionType = ReturnType<typeof ChangeNewPostTextActionCreator>
+export type ActionTypes = AddPostActionType | ChangeNewPostTextActionType
+
+const ADD_POST = "ADD-POST"
+const CHANGE_NEW_POST_TEXT = "CHANGE-NEW-POST-TEXT"
 
 export let store: storeType = {
     _state: <RootStateType>  {
@@ -90,7 +89,7 @@ export let store: storeType = {
     subscribe (observer) {
         this._callSubscriber = observer;
     },
-    dispatch(action: AddPostActionType | ChangeNewPostTextActionType) {
+    dispatch(action: ActionTypes) {
         if(action.type === "ADD-POST"){
             let newPost: PostType = {id: 5, message: this._state.profilePage.newPostText, likesCount: 0};
             this._state.profilePage.posts.push(newPost);
@@ -103,6 +102,16 @@ export let store: storeType = {
     }
 };
 
-
+const AddPostActionCreator = () => {
+    return {
+        type: ADD_POST
+    } as const
+};
+const ChangeNewPostTextActionCreator = (postText: string) => {
+    return {
+        type: CHANGE_NEW_POST_TEXT,
+        newText: postText
+    } as const
+};
 
 

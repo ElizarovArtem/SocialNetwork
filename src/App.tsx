@@ -5,11 +5,12 @@ import {Navbar} from "./Components/Navbar/Navbar";
 import {Profile} from "./Components/Profile/Profile";
 import {Dialogs} from "./Components/Dialogs/Dialogs";
 import { Route} from "react-router-dom";
-import {AddPostActionType, ChangeNewPostTextActionType, RootStateType} from "./redux/state";
+import {ActionTypes, RootStateType} from "./redux/state";
+
 
 type AppPropsType = {
     state: RootStateType
-    dispatch: (action: AddPostActionType | ChangeNewPostTextActionType) => void
+    dispatch: (action: ActionTypes) => void
 }
 
 function App(props: AppPropsType) {
