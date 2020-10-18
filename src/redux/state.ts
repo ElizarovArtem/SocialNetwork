@@ -20,13 +20,21 @@ type profilePageType = {
 type sidebarPageType = {
     friends: Array<FriendsPropsType>
 };
-type storeType ={
+type storeType = {
     _state: RootStateType
     getState: () => RootStateType
     addPost: () => void
     changeNewPostText: (newText: string) => void
     subscribe: (observer: (state: RootStateType) => void ) => void
     _callSubscriber: (state: RootStateType) => void
+    dispatch: (action: AddPostActionType | ChangeNewPostTextActionType) => void
+}
+export type AddPostActionType = {
+    type: "ADD-POST"
+}
+export type ChangeNewPostTextActionType = {
+    type: "CHANGE-NEW-POST-TEXT"
+    newText: string
 }
 
 
@@ -63,6 +71,9 @@ export let store: storeType = {
             ]
         }
     },
+    _callSubscriber (state: RootStateType) {
+        console.log("good")
+    },
     getState () {
         return this._state
     },
@@ -79,8 +90,16 @@ export let store: storeType = {
     subscribe (observer) {
         this._callSubscriber = observer;
     },
-    _callSubscriber (state: RootStateType) {
-        console.log("good")
+    dispatch(action: AddPostActionType | ChangeNewPostTextActionType) {
+        if(action.type === "ADD-POST"){
+            let newPost: PostType = {id: 5, message: this._state.profilePage.newPostText, likesCount: 0};
+            this._state.profilePage.posts.push(newPost);
+            this._state.profilePage.newPostText = "";
+            this._callSubscriber(this._state);
+        }else if(action.type === "CHANGE-NEW-POST-TEXT"){
+            this._state.profilePage.newPostText = action.newText;
+            this._callSubscriber(this._state);
+        }
     }
 };
 
