@@ -7,7 +7,7 @@ export function ProfileInfo() {
         <div className={s.content}>
             <div>
                 <img
-                    src="https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg"
+                    src="https://mirgif.com/priroda/more41.jpg"
                     width="100%"/>
             </div>
             <div className={s.descriptionBlock}>

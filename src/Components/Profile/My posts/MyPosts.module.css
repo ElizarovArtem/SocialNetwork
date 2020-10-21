@@ -4,3 +4,25 @@
 .posts{
     margin-top: 15px;
 }
+.messageArea{
+    width: 500px;
+    height: 70px;
+    background-color: azure;
+    color: black;
+    font-size: 1.5em;
+    border: none;
+    border-radius: 15px;
+    resize: none;
+    padding: 15px;
+    outline: 0;
+    outline-offset: 0;
+}
+.submitButton{
+    margin-top: 10px;
+    border-radius: 15px;
+    padding: 10px;
+    background-color: cyan;
+    color: hotpink;
+    height: 50px;
+    align-items: end;
+}

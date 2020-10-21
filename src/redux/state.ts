@@ -12,6 +12,7 @@ export type RootStateType = {
 type messagePageType = {
     dialogs: Array<DialogItemPropsType>
     messages: Array<MessagePropsType>
+    newMessageBody: string
 };
 type profilePageType = {
     posts: Array<PostType>
@@ -20,25 +21,27 @@ type profilePageType = {
 type sidebarPageType = {
     friends: Array<FriendsPropsType>
 };
-type storeType = {
+export type storeType = {
     _state: RootStateType
     getState: () => RootStateType
-    addPost: () => void
-    changeNewPostText: (newText: string) => void
-    subscribe: (observer: (state: RootStateType) => void ) => void
+    subscribe: (observer: (state: RootStateType) => void) => void
     _callSubscriber: (state: RootStateType) => void
     dispatch: (action: ActionTypes) => void
 }
 
 type AddPostActionType = ReturnType<typeof AddPostActionCreator>
 type ChangeNewPostTextActionType = ReturnType<typeof ChangeNewPostTextActionCreator>
-export type ActionTypes = AddPostActionType | ChangeNewPostTextActionType
+type ChangeNewMessageBodyType = ReturnType<typeof ChangeNewMessageBodyCreator>
+type AddNewMessageType = ReturnType<typeof AddNewMessageCreator>
+export type ActionTypes = AddPostActionType | ChangeNewPostTextActionType | ChangeNewMessageBodyType | AddNewMessageType
 
 const ADD_POST = "ADD-POST"
 const CHANGE_NEW_POST_TEXT = "CHANGE-NEW-POST-TEXT"
+const CHANGE_NEW_MESSAGE_BODY = "CHANGE-NEW-MESSAGE-BODY"
+const ADD_NEW_MESSAGE = "ADD-NEW-MESSAGE"
 
 export let store: storeType = {
-    _state: <RootStateType>  {
+    _state: <RootStateType>{
         messagesPage: <messagePageType>{
             dialogs: <Array<DialogItemPropsType>>[
                 {id: "1", name: "Ilya"},
@@ -46,10 +49,13 @@ export let store: storeType = {
                 {id: "3", name: "Igor"},
             ],
             messages: <Array<MessagePropsType>>[
-                {message: "Hello", owner: "first"},
-                {message: "Lets have a dinner together today", owner: "first"},
-                {message: "Lets go", owner: "second"},
+                {id: 1, message: "Hello", owner: "first"},
+                {id: 2, message: "Lets have a dinner together today", owner: "first"},
+                {id: 3, message: "Lets go", owner: "second"},
+                {id: 4, message: "Lets go", owner: "second"},
+                {id: 5, message: "Lets go", owner: "first"},
             ],
+            newMessageBody: ""
         },
         profilePage: <profilePageType>{
             newPostText: "it-kamasutra",
@@ -70,38 +76,37 @@ export let store: storeType = {
             ]
         }
     },
-    _callSubscriber (state: RootStateType) {
+    _callSubscriber(state: RootStateType) {
         console.log("good")
     },
-    getState () {
+    getState() {
         return this._state
     },
-    addPost() {
-        let newPost: PostType = {id: 5, message: this._state.profilePage.newPostText, likesCount: 0};
-        this._state.profilePage.posts.push(newPost);
-        this._state.profilePage.newPostText = "";
-        this._callSubscriber(this._state);
-    },
-    changeNewPostText (newText: string) {
-        this._state.profilePage.newPostText = newText;
-        this._callSubscriber(this._state);
-    },
-    subscribe (observer) {
+    subscribe(observer) {
         this._callSubscriber = observer;
     },
     dispatch(action: ActionTypes) {
-        if(action.type === "ADD-POST"){
+        if (action.type === "ADD-POST") {
             let newPost: PostType = {id: 5, message: this._state.profilePage.newPostText, likesCount: 0};
             this._state.profilePage.posts.push(newPost);
             this._state.profilePage.newPostText = "";
             this._callSubscriber(this._state);
-        }else if(action.type === "CHANGE-NEW-POST-TEXT"){
+        } else if (action.type === "CHANGE-NEW-POST-TEXT") {
             this._state.profilePage.newPostText = action.newText;
             this._callSubscriber(this._state);
+        }else if(action.type === CHANGE_NEW_MESSAGE_BODY){
+            this._state.messagesPage.newMessageBody = action.body;
+            this._callSubscriber(this._state);
+        }else if(action.type === ADD_NEW_MESSAGE){
+            let newMessage: MessagePropsType = {id: 6, message: this._state.messagesPage.newMessageBody, owner: "first"};
+            this._state.messagesPage.messages.push(newMessage);
+            this._state.messagesPage.newMessageBody = "";
+            this._callSubscriber(this._state);
         }
+
+
     }
 };
-
 const AddPostActionCreator = () => {
     return {
         type: ADD_POST
@@ -113,5 +118,17 @@ const ChangeNewPostTextActionCreator = (postText: string) => {
         newText: postText
     } as const
 };
+const ChangeNewMessageBodyCreator = (body: string) => {
+    return {
+        type: CHANGE_NEW_MESSAGE_BODY,
+        body: body
+    }as const
+};
+const AddNewMessageCreator = () => {
+    return {
+        type: ADD_NEW_MESSAGE
+    }as const
+};
+
 
 

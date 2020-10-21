@@ -26,10 +26,10 @@ export function MyPosts(props: MyPostsPropsType) {
             <h3>MY POSTS</h3>
             <div>
                 <div>
-                    <textarea  onChange={onPostChange} value={props.newPostText}/>
+                    <textarea className={s.messageArea}  onChange={onPostChange} value={props.newPostText}/>
                 </div>
                 <div>
-                    <button onClick={addPost}>Submit</button>
+                    <button className={s.submitButton} onClick={addPost}>Submit</button>
                 </div>
             </div>
             <div className={s.posts}>

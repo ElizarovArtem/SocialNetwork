@@ -5,12 +5,13 @@ import {Navbar} from "./Components/Navbar/Navbar";
 import {Profile} from "./Components/Profile/Profile";
 import {Dialogs} from "./Components/Dialogs/Dialogs";
 import { Route} from "react-router-dom";
-import {ActionTypes, RootStateType} from "./redux/state";
+import {ActionTypes, RootStateType, storeType} from "./redux/state";
 
 
 type AppPropsType = {
     state: RootStateType
     dispatch: (action: ActionTypes) => void
+    store: storeType
 }
 
 function App(props: AppPropsType) {
@@ -24,7 +25,7 @@ function App(props: AppPropsType) {
                                               dispatch={props.dispatch}
                 />}
                        path="/profile"/>
-                <Route render={() => <Dialogs dialogsState={props.state.messagesPage}/>} path="/dialogs"/>
+                <Route render={() => <Dialogs dialogsState={props.state.messagesPage} store={props.store}/>} path="/dialogs" />
             </div>
         </div>
     )
