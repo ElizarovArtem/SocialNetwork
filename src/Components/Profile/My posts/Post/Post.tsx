@@ -1,11 +1,8 @@
 import React from 'react';
 import s from "./Post.module.css";
+import {PostType} from "../../../../redux/ProfileReducer";
 
-export type PostType ={
-    id: number
-    message: string
-    likesCount: number
-}
+
 
 export function Post(props: PostType) {
     return (

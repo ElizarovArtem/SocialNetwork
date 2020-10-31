@@ -1,7 +1,8 @@
 import React from 'react';
 import s from "./Navbar.module.css";
 import {NavLink} from "react-router-dom";
-import {Friend, FriendsPropsType} from './Friends/Friend';
+import {Friend} from './Friends/Friend';
+import {FriendsPropsType} from "../../redux/SidebarReducer";
 
 type NavbarPropsType ={
     friends: Array<FriendsPropsType>
@@ -32,7 +33,6 @@ export function Navbar(props: NavbarPropsType) {
             </nav>
             <h3>FRIENDS</h3>
             <div className={s.friends + ' ' + s.friendItem}>
-
                 {friendItem}
             </div>
         </div>

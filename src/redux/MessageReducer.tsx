@@ -1,5 +1,14 @@
 import {ActionTypes, messagePageType} from "./state";
-import {MessagePropsType} from "../Components/Dialogs/Message/Message";
+
+export type MessagePropsType = {
+    id: number
+    message: string
+    owner: "first" | "second"
+}
+export type DialogItemPropsType = {
+    name: string
+    id: string
+}
 
 export type ChangeNewMessageBodyType = ReturnType<typeof ChangeNewMessageBodyCreator>
 export type AddNewMessageType = ReturnType<typeof AddNewMessageCreator>
@@ -7,7 +16,31 @@ export type AddNewMessageType = ReturnType<typeof AddNewMessageCreator>
 const CHANGE_NEW_MESSAGE_BODY = "CHANGE-NEW-MESSAGE-BODY"
 const ADD_NEW_MESSAGE = "ADD-NEW-MESSAGE"
 
-const DialogsReducer = (state: messagePageType, action: ActionTypes) => {
+
+
+let initialState: InitialStateType = {
+    dialogs: [
+        {id: "1", name: "Ilya"},
+        {id: "2", name: "Andrey"},
+        {id: "3", name: "Igor"},
+    ],
+    messages: [
+        {id: 1, message: "Hello", owner: "first"},
+        {id: 2, message: "Lets have a dinner together today", owner: "first"},
+        {id: 3, message: "Lets go", owner: "second"},
+        {id: 4, message: "Lets go", owner: "second"},
+        {id: 5, message: "Lets go", owner: "first"},
+    ],
+    newMessageBody: ""
+}
+
+type InitialStateType = {
+    dialogs: Array<DialogItemPropsType>,
+    messages: Array<MessagePropsType>,
+    newMessageBody: string
+}
+
+const MessageReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
         case CHANGE_NEW_MESSAGE_BODY:
             state.newMessageBody = action.body;
@@ -34,4 +67,4 @@ const AddNewMessageCreator = () => {
     } as const
 };
 
-export default DialogsReducer;
+export default MessageReducer;

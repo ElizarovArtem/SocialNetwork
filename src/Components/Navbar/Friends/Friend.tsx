@@ -1,10 +1,7 @@
 import React from 'react';
 import s from "./Friend.module.css";
+import {FriendsPropsType} from "../../../redux/SidebarReducer";
 
-
-export type FriendsPropsType = {
-    name: string
-}
 
 export function Friend(props: FriendsPropsType) {
     return (

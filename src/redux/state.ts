@@ -1,10 +1,11 @@
-import {DialogItemPropsType} from "../Components/Dialogs/DialogItem/DialogItem";
-import {MessagePropsType} from "../Components/Dialogs/Message/Message";
-import {PostType} from "../Components/Profile/My posts/Post/Post";
-import {FriendsPropsType} from "../Components/Navbar/Friends/Friend";
-import ProfileReducer, {AddPostActionType, ChangeNewPostTextActionType} from "./ProfileReducer";
-import DialogsReducer, {AddNewMessageType, ChangeNewMessageBodyType} from "./DialogsReducer";
-import SidebarReducer from "./SidebarReducer";
+import ProfileReducer, {AddPostActionType, ChangeNewPostTextActionType, PostType} from "./ProfileReducer";
+import MessageReducer, {
+    AddNewMessageType,
+    ChangeNewMessageBodyType,
+    DialogItemPropsType,
+    MessagePropsType
+} from "./MessageReducer";
+import SidebarReducer, {FriendsPropsType} from "./SidebarReducer";
 
 
 export type RootStateType = {
@@ -35,14 +36,14 @@ export type storeType = {
 export type ActionTypes = AddPostActionType | ChangeNewPostTextActionType | ChangeNewMessageBodyType | AddNewMessageType
 
 export let store: storeType = {
-    _state: <RootStateType>{
-        messagesPage: <messagePageType>{
-            dialogs: <Array<DialogItemPropsType>>[
+    _state: {
+        messagesPage: {
+            dialogs: [
                 {id: "1", name: "Ilya"},
                 {id: "2", name: "Andrey"},
                 {id: "3", name: "Igor"},
             ],
-            messages: <Array<MessagePropsType>>[
+            messages:[
                 {id: 1, message: "Hello", owner: "first"},
                 {id: 2, message: "Lets have a dinner together today", owner: "first"},
                 {id: 3, message: "Lets go", owner: "second"},
@@ -51,16 +52,16 @@ export let store: storeType = {
             ],
             newMessageBody: ""
         },
-        profilePage: <profilePageType>{
+        profilePage: {
             newPostText: "it-kamasutra",
-            posts: <Array<PostType>>[
+            posts: [
                 {id: 1, message: "Hello everybody", likesCount: 23},
                 {id: 2, message: "Who want's to go for a walk?", likesCount: 12},
                 {id: 2, message: "Go alone, idioto", likesCount: 12},
             ]
         },
-        sidebar: <sidebarPageType>{
-            friends: <Array<FriendsPropsType>>[
+        sidebar: {
+            friends: [
                 {name: "Kolya"},
                 {name: "Misha"},
                 {name: "Misha"},
@@ -82,7 +83,7 @@ export let store: storeType = {
     dispatch(action: ActionTypes) {
 
         this._state.profilePage = ProfileReducer(this._state.profilePage, action);
-        this._state.messagesPage = DialogsReducer(this._state.messagesPage, action);
+        this._state.messagesPage = MessageReducer(this._state.messagesPage, action);
         this._state.sidebar = SidebarReducer(this._state.sidebar, action);
 
         this._callSubscriber(this._state);

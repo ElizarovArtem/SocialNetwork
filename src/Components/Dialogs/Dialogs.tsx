@@ -1,39 +1,36 @@
 import React, {ChangeEvent, KeyboardEvent} from 'react';
 import s from "./Dialogs.module.css";
-import {DialogItem, DialogItemPropsType} from './DialogItem/DialogItem';
-import {Message, MessagePropsType} from "./Message/Message";
-import {storeType} from "../../redux/state";
+import {DialogItem} from './DialogItem/DialogItem';
+import {Message} from "./Message/Message";
+import {DialogItemPropsType, MessagePropsType} from "../../redux/MessageReducer";
 
 type DialogsPropsType = {
-    dialogsState: DialogsStateType
-    store: storeType
-}
-type DialogsStateType = {
     dialogs: Array<DialogItemPropsType>
     messages: Array<MessagePropsType>
+    onChangeNewMessageBody: (text: string) => void
+    onSendMessage: () => void
+    onSendMessageKeyPress: () => void
+    newMessageBody: string
 }
 
 export function Dialogs(props: DialogsPropsType) {
 
-    const state = props.store.getState().messagesPage
-
-    let dialogsElements = props.dialogsState.dialogs.map(dialog => <DialogItem name={dialog.name} id={dialog.id}/>);
-    let messagesElements = props.dialogsState.messages.map(message => <Message id={message.id} owner={message.owner}
+    let dialogsElements = props.dialogs.map(dialog => <DialogItem name={dialog.name} id={dialog.id}/>);
+    let messagesElements = props.messages.map(message => <Message id={message.id} owner={message.owner}
                                                                                message={message.message}/>);
 
     const onChangeNewMessageBody = (e: ChangeEvent<HTMLTextAreaElement>) => {
         let body = e.currentTarget.value;
-        props.store.dispatch({type: "CHANGE-NEW-MESSAGE-BODY", body: body});
+        props.onChangeNewMessageBody(body)
     }
     const onSendMessageClick = () => {
-        props.store.dispatch({type: "ADD-NEW-MESSAGE"})
+        props.onSendMessage()
     };
     const onSendMessageKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
         if(e.key === "Enter" || e.ctrlKey){
-            props.store.dispatch({type: "ADD-NEW-MESSAGE"})
+            props.onSendMessageKeyPress()
         }
     }
-
 
     return (
         <div className={s.dialogs}>
@@ -43,7 +40,12 @@ export function Dialogs(props: DialogsPropsType) {
             <div className={s.messages}>
                 {messagesElements}
                 <div className={s.newMessageArea}>
-                    <textarea className={s.messageArea} value={state.newMessageBody} onKeyPress={onSendMessageKeyPress} onChange={onChangeNewMessageBody}></textarea>
+                    <textarea className={s.messageArea}
+                              value={props.newMessageBody}
+                              onKeyPress={onSendMessageKeyPress}
+                              onChange={onChangeNewMessageBody}>
+
+                    </textarea>
                     <button className={s.submitButton} onClick={onSendMessageClick}>Submit</button>
                 </div>
             </div>
