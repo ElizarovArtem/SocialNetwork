@@ -9,9 +9,7 @@ import {DialogsContainer} from "./Components/Dialogs/DialogsContainer";
 import {NavbarContainer} from "./Components/Navbar/NavbarContainer";
 
 
-type AppPropsType = {
-    store: any
-}
+type AppPropsType = {}
 
 function App(props: AppPropsType) {
     return (
@@ -19,7 +17,7 @@ function App(props: AppPropsType) {
             <Header/>
             <NavbarContainer />
             <div className="app-wrapper-content">
-                <Route render={() => <Profile store={props.store}/>}
+                <Route render={() => <Profile />}
                        path="/profile"/>
                 <Route render={() => <DialogsContainer />}
                        path="/dialogs" />

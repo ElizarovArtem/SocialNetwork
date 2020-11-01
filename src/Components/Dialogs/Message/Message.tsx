@@ -1,7 +1,11 @@
 import React from 'react';
 import s from "./../Dialogs.module.css";
-import {MessagePropsType} from "../../../redux/MessageReducer";
 
+export type MessagePropsType = {
+    id: number
+    message: string
+    owner: "first" | "second"
+}
 
 export function Message(props: MessagePropsType) {
     return props.owner === "first" ?

@@ -1,11 +1,11 @@
 import {ActionTypes, messagePageType} from "./state";
 
-export type MessagePropsType = {
+export type MessageType = {
     id: number
     message: string
     owner: "first" | "second"
 }
-export type DialogItemPropsType = {
+export type DialogItemType = {
     name: string
     id: string
 }
@@ -35,8 +35,8 @@ let initialState: InitialStateType = {
 }
 
 type InitialStateType = {
-    dialogs: Array<DialogItemPropsType>,
-    messages: Array<MessagePropsType>,
+    dialogs: Array<DialogItemType>,
+    messages: Array<MessageType>,
     newMessageBody: string
 }
 
@@ -46,7 +46,7 @@ const MessageReducer = (state: InitialStateType = initialState, action: ActionTy
             state.newMessageBody = action.body;
             return state;
         case ADD_NEW_MESSAGE:
-            let newMessage: MessagePropsType = {id: 6, message: state.newMessageBody, owner: "first"};
+            let newMessage: MessageType = {id: 6, message: state.newMessageBody, owner: "first"};
             state.messages.push(newMessage);
             state.newMessageBody = "";
             return state;

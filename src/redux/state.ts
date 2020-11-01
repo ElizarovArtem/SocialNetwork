@@ -2,8 +2,8 @@ import ProfileReducer, {AddPostActionType, ChangeNewPostTextActionType, PostType
 import MessageReducer, {
     AddNewMessageType,
     ChangeNewMessageBodyType,
-    DialogItemPropsType,
-    MessagePropsType
+    DialogItemType,
+    MessageType
 } from "./MessageReducer";
 import SidebarReducer, {FriendsPropsType} from "./SidebarReducer";
 
@@ -14,8 +14,8 @@ export type RootStateType = {
     sidebar: sidebarPageType
 };
 export type messagePageType = {
-    dialogs: Array<DialogItemPropsType>
-    messages: Array<MessagePropsType>
+    dialogs: Array<DialogItemType>
+    messages: Array<MessageType>
     newMessageBody: string
 };
 export type profilePageType = {
@@ -25,7 +25,7 @@ export type profilePageType = {
 export type sidebarPageType = {
     friends: Array<FriendsPropsType>
 };
-export type storeType = {
+export type StoreType = {
     _state: RootStateType
     getState: () => RootStateType
     subscribe: (observer: (state: RootStateType) => void) => void
@@ -35,7 +35,7 @@ export type storeType = {
 
 export type ActionTypes = AddPostActionType | ChangeNewPostTextActionType | ChangeNewMessageBodyType | AddNewMessageType
 
-export let store: storeType = {
+export let store: StoreType = {
     _state: {
         messagesPage: {
             dialogs: [

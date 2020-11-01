@@ -2,11 +2,11 @@ import React, {ChangeEvent, KeyboardEvent} from 'react';
 import s from "./Dialogs.module.css";
 import {DialogItem} from './DialogItem/DialogItem';
 import {Message} from "./Message/Message";
-import {DialogItemPropsType, MessagePropsType} from "../../redux/MessageReducer";
+import {DialogItemType, MessageType} from "../../redux/MessageReducer";
 
 type DialogsPropsType = {
-    dialogs: Array<DialogItemPropsType>
-    messages: Array<MessagePropsType>
+    dialogs: Array<DialogItemType>
+    messages: Array<MessageType>
     onChangeNewMessageBody: (text: string) => void
     onSendMessage: () => void
     onSendMessageKeyPress: () => void
