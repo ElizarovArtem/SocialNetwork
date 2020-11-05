@@ -9,20 +9,20 @@ import SidebarReducer, {FriendsPropsType} from "./SidebarReducer";
 
 
 export type RootStateType = {
-    messagesPage: messagePageType
-    profilePage: profilePageType
-    sidebar: sidebarPageType
+    messagesPage: MessagePageType
+    profilePage: ProfilePageType
+    sidebar: SidebarPageType
 };
-export type messagePageType = {
+export type MessagePageType = {
     dialogs: Array<DialogItemType>
     messages: Array<MessageType>
     newMessageBody: string
 };
-export type profilePageType = {
+export type ProfilePageType = {
     posts: Array<PostType>
     newPostText: string
 };
-export type sidebarPageType = {
+export type SidebarPageType = {
     friends: Array<FriendsPropsType>
 };
 export type StoreType = {

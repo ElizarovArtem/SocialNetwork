@@ -1,4 +1,4 @@
-import {ActionTypes, messagePageType} from "./state";
+import {ActionTypes} from "./state";
 
 export type MessageType = {
     id: number

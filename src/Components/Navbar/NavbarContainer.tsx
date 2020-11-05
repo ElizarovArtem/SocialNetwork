@@ -1,22 +1,15 @@
 import React from 'react';
 import {Navbar} from "./Navbar";
-import StoreContext from "../../StoreContext";
+import {connect} from "react-redux";
+import {AppStateType} from "../../redux/redux-store";
 
-type NavbarPropsType = {}
 
-export function NavbarContainer(props: NavbarPropsType) {
-    return (
-        <StoreContext.Consumer>
-            {
-                (store) => {
-                    let state = store.getState().sidebar
-
-                    return (
-                        <Navbar friends={state.friends}/>
-                    )
-                }
-            }
-        </StoreContext.Consumer>
-        )
+let mapStateToProps = (state: AppStateType) => {
+    return{
+        sidebarState: state.sidebar
+    }
 }
 
+let mapDispatchToProps = () => {}
+
+export const NavbarContainer = connect(mapStateToProps, mapDispatchToProps)(Navbar)

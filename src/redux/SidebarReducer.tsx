@@ -1,4 +1,4 @@
-import {ActionTypes, sidebarPageType} from "./state";
+import {ActionTypes, SidebarPageType} from "./state";
 
 export type FriendsPropsType = {
     name: string
