@@ -42,14 +42,19 @@ type InitialStateType = {
 
 const MessageReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
-        case CHANGE_NEW_MESSAGE_BODY:
-            state.newMessageBody = action.body;
-            return state;
-        case ADD_NEW_MESSAGE:
+        case CHANGE_NEW_MESSAGE_BODY: {
+            let stateCopy = {...state};
+            stateCopy.newMessageBody = action.body;
+            return stateCopy;
+        }
+        case ADD_NEW_MESSAGE: {
             let newMessage: MessageType = {id: 6, message: state.newMessageBody, owner: "first"};
-            state.messages.push(newMessage);
-            state.newMessageBody = "";
-            return state;
+            let stateCopy = {...state};
+            stateCopy.messages = [...state.messages]
+            stateCopy.messages.push(newMessage);
+            stateCopy.newMessageBody = "";
+            return stateCopy;
+        }
         default:
             return state;
     }
