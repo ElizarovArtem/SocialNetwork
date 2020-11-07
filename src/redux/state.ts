@@ -6,6 +6,7 @@ import MessageReducer, {
     MessageType
 } from "./MessageReducer";
 import SidebarReducer, {FriendsPropsType} from "./SidebarReducer";
+import {FollowACType, SetUsersACType, UnfollowACType} from "./UsersReducer";
 
 
 export type RootStateType = {
@@ -33,7 +34,7 @@ export type StoreType = {
     dispatch: (action: ActionTypes) => void
 }
 
-export type ActionTypes = AddPostActionType | ChangeNewPostTextActionType | ChangeNewMessageBodyType | AddNewMessageType
+export type ActionTypes = AddPostActionType | ChangeNewPostTextActionType | ChangeNewMessageBodyType | AddNewMessageType | FollowACType | UnfollowACType | SetUsersACType
 
 export let store: StoreType = {
     _state: {
