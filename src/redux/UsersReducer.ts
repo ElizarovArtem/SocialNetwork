@@ -2,9 +2,9 @@ import {ActionTypes} from "./state";
 
 export type UserType = {
     id: number
-    avatarURL: string
+    photos: any
     followed: boolean
-    fullName: string
+    name: string
     status: string
     location: LocationType
 }

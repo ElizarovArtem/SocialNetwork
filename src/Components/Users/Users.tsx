@@ -1,6 +1,9 @@
 import React from 'react';
 import {UserType} from "../../redux/UsersReducer";
 import s from './users.module.css';
+import axios from 'axios';
+import userPhoto from '../../assets/images/user-profile.png'
+
 
 type UsersPropsType = {
     users: Array<UserType>
@@ -9,35 +12,60 @@ type UsersPropsType = {
     setUsers: (users: Array<UserType>) => void
 }
 
+
+export class Users extends React.Component<UsersPropsType, { }> {
+    componentDidMount() {
+        axios.get("https://social-network.samuraijs.com/api/1.0/users")
+            .then(response => {
+                this.props.setUsers(response.data.items)
+            })
+    }
+
+    render() {
+        return(
+            <div>
+                {this.props.users.map(u => {
+                    return (
+                        <div>
+                            <div>
+                                <div>
+                                    <img className={s.photo} src={u.photos.small !== null ? u.photos.small : userPhoto}/>
+                                </div>
+                                <div>
+                                    {u.followed ?
+                                        <button onClick={() => this.props.unfollow(u.id)}>Unfollow</button> :
+                                        <button onClick={() => this.props.follow(u.id)}>Follow</button>
+                                    }
+
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <div>{u.name}</div>
+                                    <div>{u.status}</div>
+                                </div>
+                                <div>
+                                    <div>{"u.location.country"}</div>
+                                    <div>{"u.location.city"}</div>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+        )
+    }
+}
+
+
+/*
 export function Users (props: UsersPropsType) {
 
     if(props.users.length === 0) {
-        props.setUsers([
-                {
-                    id: 1,
-                    avatarURL: "https://upload.wikimedia.org/wikipedia/commons/8/80/James_McAvoy_by_Gage_Skidmore_2.jpg",
-                    followed: true,
-                    fullName: "James",
-                    status: "Filth - good film",
-                    location: {city: "London", country: "England"}
-                },
-                {
-                    id: 2,
-                    avatarURL: "https://upload.wikimedia.org/wikipedia/commons/8/80/James_McAvoy_by_Gage_Skidmore_2.jpg",
-                    followed: false,
-                    fullName: "Mike",
-                    status: "Filth - nice film",
-                    location: {city: "London", country: "England"}
-                },
-                {
-                    id: 3,
-                    avatarURL: "https://upload.wikimedia.org/wikipedia/commons/8/80/James_McAvoy_by_Gage_Skidmore_2.jpg",
-                    followed: true,
-                    fullName: "James",
-                    status: "Filth - not good film",
-                    location: {city: "London", country: "England"}
-                }
-        ])
+        axios.get("https://social-network.samuraijs.com/api/1.0/users")
+            .then(response => {
+                props.setUsers(response.data.items)
+            })
     }
 
     return(
@@ -47,7 +75,7 @@ export function Users (props: UsersPropsType) {
                     <div>
                         <div>
                             <div>
-                                <img className={s.photo} src={u.avatarURL}/>
+                                <img className={s.photo} src={u.photos.small != null ? u.photos.small : userPhoto}/>
                             </div>
                             <div>
                                 {u.followed ?
@@ -59,12 +87,12 @@ export function Users (props: UsersPropsType) {
                         </div>
                         <div>
                             <div>
-                                <div>{u.fullName}</div>
+                                <div>{u.name}</div>
                                 <div>{u.status}</div>
                             </div>
                             <div>
-                                <div>{u.location.country}</div>
-                                <div>{u.location.city}</div>
+                                <div>{"u.location.country"}</div>
+                                <div>{"u.location.city"}</div>
                             </div>
                         </div>
                     </div>
@@ -73,3 +101,6 @@ export function Users (props: UsersPropsType) {
         </div>
     )
 }
+*/
+
+
