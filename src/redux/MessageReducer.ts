@@ -34,7 +34,7 @@ let initialState: InitialStateType = {
     newMessageBody: ""
 }
 
-type InitialStateType = {
+export type InitialStateType = {
     dialogs: Array<DialogItemType>,
     messages: Array<MessageType>,
     newMessageBody: string
@@ -53,7 +53,7 @@ const MessageReducer = (state: InitialStateType = initialState, action: ActionTy
             return {
                 ...state,
                 messages: [...state.messages, newMessage],
-                newMessageBody: ''
+                newMessageBody: ""
             }
         }
         default:
@@ -61,13 +61,13 @@ const MessageReducer = (state: InitialStateType = initialState, action: ActionTy
     }
 }
 
-const ChangeNewMessageBodyCreator = (body: string) => {
+export const ChangeNewMessageBodyCreator = (body: string) => {
     return {
         type: CHANGE_NEW_MESSAGE_BODY,
         body: body
     } as const
 };
-const AddNewMessageCreator = () => {
+export const AddNewMessageCreator = () => {
     return {
         type: ADD_NEW_MESSAGE
     } as const

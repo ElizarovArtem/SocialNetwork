@@ -25,11 +25,11 @@ let initialState: InitialStateType = {
     users: []
 }
 
-type InitialStateType = {
+export type InitialStateType = {
     users: Array<UserType>
 }
 
-const UsersReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
+export const UsersReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type){
         case FOLLOW:
            return  {
@@ -57,19 +57,19 @@ const UsersReducer = (state: InitialStateType = initialState, action: ActionType
     return state;
 }
 
-const FollowAC = (ID: number) => {
+export const FollowAC = (ID: number) => {
     return {
         type: FOLLOW,
         userID: ID
     } as const
 };
-const UnfollowAC = (ID: number) => {
+export const UnfollowAC = (ID: number) => {
     return {
         type: UNFOLLOW,
         userID: ID
     } as const
 };
-const SetUsersAC = (users: Array<UserType>) => {
+export const SetUsersAC = (users: Array<UserType>) => {
     return {
         type: SET_USERS,
         user: users

@@ -21,12 +21,12 @@ let initialState: InitialStateType = {
     ]
 }
 
-type InitialStateType = {
+export type InitialStateType = {
     posts: Array<PostType>
     newPostText: string
 }
 
-const ProfileReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
+export const ProfileReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
     debugger
     switch (action.type) {
         case ADD_POST: {
@@ -48,12 +48,12 @@ const ProfileReducer = (state: InitialStateType = initialState, action: ActionTy
     }
 }
 
-const AddPostActionCreator = () => {
+export const AddPostActionCreator = () => {
     return {
         type: ADD_POST
     } as const
 };
-const ChangeNewPostTextActionCreator = (postText: string) => {
+export const ChangeNewPostTextActionCreator = (postText: string) => {
     return {
         type: CHANGE_NEW_POST_TEXT,
         newText: postText
