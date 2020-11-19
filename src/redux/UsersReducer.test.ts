@@ -1,4 +1,11 @@
-import UsersReducer, {FollowAC, InitialStateType, SetUsersAC, UnfollowAC} from "./UsersReducer";
+import UsersReducer, {
+    changeCurrentPageAC,
+    changeTotalUsersCountAC,
+    followAC,
+    InitialStateType,
+    setUsersAC,
+    unfollowAC
+} from "./UsersReducer";
 
 test("user should be followed", () => {
     let initialState: InitialStateType = {
@@ -11,10 +18,13 @@ test("user should be followed", () => {
                 followed: false,
                 location: {city:"Moscow", country:"Russia"}
             }
-        ]
+        ],
+        pageSize: 5,
+        totalUsersCount: 0,
+        currentPage: 1
     }
 
-    const action = FollowAC(0)
+    const action = followAC(0)
 
     const endState = UsersReducer(initialState, action)
 
@@ -32,17 +42,20 @@ test("user should be unfollowed", () => {
                 followed: true,
                 location: {city:"Moscow", country:"Russia"}
             }
-        ]
+        ],
+        pageSize: 5,
+        totalUsersCount: 0,
+        currentPage: 1
     }
 
-    const action = UnfollowAC(0)
+    const action = unfollowAC(0)
 
     const endState = UsersReducer(initialState, action)
 
     expect(endState.users[0].followed).toBe(false)
 })
 
-test("users should be added", () => {
+test("users should be changed", () => {
     let initialState: InitialStateType = {
         users: [
             {
@@ -53,7 +66,10 @@ test("users should be added", () => {
                 followed: true,
                 location: {city:"Moscow", country:"Russia"}
             }
-        ]
+        ],
+        pageSize: 5,
+        totalUsersCount: 0,
+        currentPage: 1
     }
 
     const newUsers = [
@@ -75,10 +91,42 @@ test("users should be added", () => {
         }
     ]
 
-    const action = SetUsersAC(newUsers)
+    const action = setUsersAC(newUsers)
 
     const endState = UsersReducer(initialState, action)
 
-    expect(endState.users.length).toBe(3)
-    expect(endState.users[1].id).toBe(1)
+    expect(endState.users.length).toBe(2)
+    expect(endState.users[1].id).toBe(2)
+})
+
+test("current page should be changed", () => {
+    let initialState: InitialStateType = {
+        users: [],
+        pageSize: 5,
+        totalUsersCount: 0,
+        currentPage: 1
+    }
+
+    const newPage = 3
+    const action = changeCurrentPageAC(newPage)
+
+    const endState = UsersReducer(initialState, action)
+
+    expect(endState.currentPage).toBe(3)
+})
+
+test("total users count should be changed", () => {
+    let initialState: InitialStateType = {
+        users: [],
+        pageSize: 5,
+        totalUsersCount: 0,
+        currentPage: 1
+    }
+
+    const newUsersCount = 100
+    const action = changeTotalUsersCountAC(newUsersCount)
+
+    const endState = UsersReducer(initialState, action)
+
+    expect(endState.totalUsersCount).toBe(100)
 })

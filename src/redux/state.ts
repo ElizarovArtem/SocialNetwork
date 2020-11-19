@@ -6,7 +6,13 @@ import MessageReducer, {
     MessageType
 } from "./MessageReducer";
 import SidebarReducer, {FriendsPropsType} from "./SidebarReducer";
-import {FollowACType, SetUsersACType, UnfollowACType} from "./UsersReducer";
+import {
+    ChangeCurrentPageType,
+    ChangeTotalUsersCountType,
+    FollowACType,
+    SetUsersACType,
+    UnfollowACType
+} from "./UsersReducer";
 
 
 export type RootStateType = {
@@ -34,7 +40,15 @@ export type StoreType = {
     dispatch: (action: ActionTypes) => void
 }
 
-export type ActionTypes = AddPostActionType | ChangeNewPostTextActionType | ChangeNewMessageBodyType | AddNewMessageType | FollowACType | UnfollowACType | SetUsersACType
+export type ActionTypes = AddPostActionType
+    | ChangeNewPostTextActionType
+    | ChangeNewMessageBodyType
+    | AddNewMessageType
+    | FollowACType
+    | UnfollowACType
+    | SetUsersACType
+    | ChangeCurrentPageType
+    | ChangeTotalUsersCountType
 
 export let store: StoreType = {
     _state: {
@@ -44,7 +58,7 @@ export let store: StoreType = {
                 {id: "2", name: "Andrey"},
                 {id: "3", name: "Igor"},
             ],
-            messages:[
+            messages: [
                 {id: 1, message: "Hello", owner: "first"},
                 {id: 2, message: "Lets have a dinner together today", owner: "first"},
                 {id: 3, message: "Lets go", owner: "second"},

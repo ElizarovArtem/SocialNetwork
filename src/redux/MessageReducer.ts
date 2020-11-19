@@ -49,12 +49,15 @@ const MessageReducer = (state: InitialStateType = initialState, action: ActionTy
             }
         }
         case ADD_NEW_MESSAGE: {
-            let newMessage: MessageType = {id: 6, message: state.newMessageBody, owner: "first"};
-            return {
-                ...state,
-                messages: [...state.messages, newMessage],
-                newMessageBody: ""
+            if (state.newMessageBody !== ''){
+                let newMessage: MessageType = {id: 6, message: state.newMessageBody, owner: "first"};
+                return {
+                    ...state,
+                    messages: [...state.messages, newMessage],
+                    newMessageBody: ""
+                }
             }
+            return state
         }
         default:
             return state;

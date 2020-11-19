@@ -6,24 +6,51 @@ import userPhoto from '../../assets/images/user-profile.png'
 
 
 type UsersPropsType = {
+    totalUsersCount: number
+    pageSize: number
+    currentPage: number
     users: Array<UserType>
     follow: (id: number) => void
     unfollow: (id: number) => void
     setUsers: (users: Array<UserType>) => void
+    changeCurrentPage: (newPage: number) => void
+    changeTotalUsersCount: (newTotalUsersCount: number) => void
 }
 
 
 export class Users extends React.Component<UsersPropsType, { }> {
     componentDidMount() {
-        axios.get("https://social-network.samuraijs.com/api/1.0/users")
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=1&count=${this.props.pageSize}`)
             .then(response => {
                 this.props.setUsers(response.data.items)
+                this.props.changeTotalUsersCount(response.data.totalCount)
             })
     }
 
     render() {
+        let pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize);
+        const pages = [];
+        for (let i = 1; i <= pagesCount; i++){
+            pages.push(i);
+        }
+
+        const selectPage = (newPage: number) => {
+            this.props.changeCurrentPage(newPage)
+            axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${newPage}&count=${this.props.pageSize}`)
+                .then(response => {
+                    this.props.setUsers(response.data.items)
+                })
+        }
+
         return(
             <div>
+                <div className={s.pages}>
+                    {pages.map(p => {
+                        return <span
+                            onClick={() => selectPage(p)}
+                            className={p === this.props.currentPage ? s.selectedPage : s.page}>{p}</span>
+                    })}
+                </div>
                 {this.props.users.map(u => {
                     return (
                         <div>
