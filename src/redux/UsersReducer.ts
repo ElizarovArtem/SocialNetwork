@@ -22,12 +22,14 @@ const UNFOLLOW = "UNFOLLOW"
 const SET_USERS = "SET-USERS"
 const CHANGE_CURRENT_PAGE = "CHANGE-CURRENT-PAGE"
 const CHANGE_TOTAL_USERS_COUNT = "CHANGE-TOTAL-USERS-COUNT"
+const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING"
 
 let initialState: InitialStateType = {
     users: [],
     pageSize: 100,
     totalUsersCount: 0,
-    currentPage: 1
+    currentPage: 1,
+    isFetching: false
 }
 
 export type InitialStateType = {
@@ -35,6 +37,7 @@ export type InitialStateType = {
     totalUsersCount: number
     pageSize: number
     currentPage: number
+    isFetching: boolean
 }
 
 export const UsersReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
@@ -65,6 +68,8 @@ export const UsersReducer = (state: InitialStateType = initialState, action: Act
             return { ...state, currentPage: action.newPage }
         case "CHANGE-TOTAL-USERS-COUNT":
             return { ...state, totalUsersCount: action.newUsersCount}
+        case "TOGGLE-IS-FETCHING":
+            return { ...state, isFetching: action.isFetching }
         default:
             return state
     }
@@ -107,6 +112,16 @@ export const changeTotalUsersCountAC = (newUsersCount: number): ChangeTotalUsers
     return {
         type: CHANGE_TOTAL_USERS_COUNT,
         newUsersCount
+    }
+};
+export type ToggleIsFetchingType = {
+    type: "TOGGLE-IS-FETCHING"
+    isFetching: boolean
+}
+export const toggleIsFetchingAC = (isFetching: boolean): ToggleIsFetchingType => {
+    return {
+        type: TOGGLE_IS_FETCHING,
+        isFetching
     }
 };
 

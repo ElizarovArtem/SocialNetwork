@@ -3,7 +3,7 @@ import UsersReducer, {
     changeTotalUsersCountAC,
     followAC,
     InitialStateType,
-    setUsersAC,
+    setUsersAC, toggleIsFetchingAC,
     unfollowAC
 } from "./UsersReducer";
 
@@ -21,7 +21,8 @@ test("user should be followed", () => {
         ],
         pageSize: 5,
         totalUsersCount: 0,
-        currentPage: 1
+        currentPage: 1,
+        isFetching: false
     }
 
     const action = followAC(0)
@@ -45,7 +46,8 @@ test("user should be unfollowed", () => {
         ],
         pageSize: 5,
         totalUsersCount: 0,
-        currentPage: 1
+        currentPage: 1,
+        isFetching: false
     }
 
     const action = unfollowAC(0)
@@ -69,7 +71,8 @@ test("users should be changed", () => {
         ],
         pageSize: 5,
         totalUsersCount: 0,
-        currentPage: 1
+        currentPage: 1,
+        isFetching: false
     }
 
     const newUsers = [
@@ -104,7 +107,8 @@ test("current page should be changed", () => {
         users: [],
         pageSize: 5,
         totalUsersCount: 0,
-        currentPage: 1
+        currentPage: 1,
+        isFetching: false
     }
 
     const newPage = 3
@@ -120,7 +124,8 @@ test("total users count should be changed", () => {
         users: [],
         pageSize: 5,
         totalUsersCount: 0,
-        currentPage: 1
+        currentPage: 1,
+        isFetching: false
     }
 
     const newUsersCount = 100
@@ -129,4 +134,21 @@ test("total users count should be changed", () => {
     const endState = UsersReducer(initialState, action)
 
     expect(endState.totalUsersCount).toBe(100)
+})
+
+test("total users count should be changed", () => {
+    let initialState: InitialStateType = {
+        users: [],
+        pageSize: 5,
+        totalUsersCount: 0,
+        currentPage: 1,
+        isFetching: false
+    }
+
+    const isFetching = true
+    const action = toggleIsFetchingAC(isFetching)
+
+    const endState = UsersReducer(initialState, action)
+
+    expect(endState.isFetching).toBe(isFetching)
 })

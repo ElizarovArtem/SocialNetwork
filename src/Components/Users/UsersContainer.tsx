@@ -3,11 +3,15 @@ import {connect} from "react-redux";
 import {Users} from "./Users";
 import {AppStateType} from "../../redux/redux-store";
 import {ActionTypes} from "../../redux/state";
-import {changeCurrentPageAC, changeTotalUsersCountAC, UserType} from "../../redux/UsersReducer";
+import {changeCurrentPageAC, changeTotalUsersCountAC, toggleIsFetchingAC, UserType} from "../../redux/UsersReducer";
 import axios from "axios";
+import {Preloader} from "../common/Preloader/Preloader";
+
+
 
 type UsersContainerPropsType = {
     totalUsersCount: number
+    isFetching: boolean
     pageSize: number
     currentPage: number
     users: Array<UserType>
@@ -15,37 +19,44 @@ type UsersContainerPropsType = {
     unfollow: (id: number) => void
     changeCurrentPage: (newPage: number) => void
     setUsers: (users: Array<UserType>) => void
+    toggleIsFetching: (isFetching: boolean) => void
     changeTotalUsersCount: (newTotalUsersCount: number) => void
 }
 
 export class UsersContainer extends React.Component<UsersContainerPropsType, {}> {
     componentDidMount() {
+        this.props.toggleIsFetching(true)
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=1&count=${this.props.pageSize}`)
             .then(response => {
+                this.props.toggleIsFetching(false)
                 this.props.setUsers(response.data.items)
                 this.props.changeTotalUsersCount(response.data.totalCount)
             })
     }
 
     onPageChange = (newPage: number) => {
-        debugger
+        this.props.toggleIsFetching(true)
         this.props.changeCurrentPage(newPage)
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${newPage}&count=${this.props.pageSize}`)
             .then(response => {
+                this.props.toggleIsFetching(false)
                 this.props.setUsers(response.data.items)
             })
     }
 
     render() {
-        return <Users
-            users={this.props.users}
-            currentPage={this.props.currentPage}
-            pageSize={this.props.pageSize}
-            onPageChange={this.onPageChange}
-            totalUsersCount={this.props.totalUsersCount}
-            follow={this.props.follow}
-            unfollow={this.props.unfollow}
-        />
+        return <>
+                {this.props.isFetching ? <Preloader/> : null}
+            <Users
+                users={this.props.users}
+                currentPage={this.props.currentPage}
+                pageSize={this.props.pageSize}
+                onPageChange={this.onPageChange}
+                totalUsersCount={this.props.totalUsersCount}
+                follow={this.props.follow}
+                unfollow={this.props.unfollow}
+            />
+        </>
     }
 }
 
@@ -55,6 +66,7 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
         currentPage: state.usersPage.currentPage,
         pageSize: state.usersPage.pageSize,
         totalUsersCount: state.usersPage.totalUsersCount,
+        isFetching: state.usersPage.isFetching
     }
 }
 
@@ -63,6 +75,7 @@ type MapStateToPropsType = {
     totalUsersCount: number
     pageSize: number
     currentPage: number
+    isFetching: boolean
 }
 
 let MapDispatchToProps = (dispatch: (action: ActionTypes) => void): MapDispatchToPropsType => {
@@ -81,6 +94,9 @@ let MapDispatchToProps = (dispatch: (action: ActionTypes) => void): MapDispatchT
         },
         changeTotalUsersCount: (newTotalUsersCount: number) => {
             dispatch(changeTotalUsersCountAC(newTotalUsersCount))
+        },
+        toggleIsFetching: (isFetching: boolean) => {
+            dispatch(toggleIsFetchingAC(isFetching))
         }
     }
 }
@@ -91,6 +107,7 @@ type MapDispatchToPropsType = {
     setUsers: (users: Array<UserType>) => void
     changeCurrentPage: (newPage: number) => void
     changeTotalUsersCount: (newTotalUsersCount: number) => void
+    toggleIsFetching: (isFetching: boolean) => void
 }
 
 export const UserBigContainer = connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(mapStateToProps, MapDispatchToProps)(UsersContainer)

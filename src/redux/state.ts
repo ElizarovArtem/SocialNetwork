@@ -10,7 +10,7 @@ import {
     ChangeCurrentPageType,
     ChangeTotalUsersCountType,
     FollowACType,
-    SetUsersACType,
+    SetUsersACType, ToggleIsFetchingType,
     UnfollowACType
 } from "./UsersReducer";
 
@@ -49,6 +49,7 @@ export type ActionTypes = AddPostActionType
     | SetUsersACType
     | ChangeCurrentPageType
     | ChangeTotalUsersCountType
+    | ToggleIsFetchingType
 
 export let store: StoreType = {
     _state: {
