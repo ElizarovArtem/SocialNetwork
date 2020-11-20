@@ -5,8 +5,7 @@ import {Profile} from "./Components/Profile/Profile";
 import {Route} from "react-router-dom";
 import {DialogsContainer} from "./Components/Dialogs/DialogsContainer";
 import {NavbarContainer} from "./Components/Navbar/NavbarContainer";
-import {Users} from "./Components/Users/Users";
-import {UsersContainer} from "./Components/Users/UsersContainer";
+import {UserBigContainer, UsersContainer} from "./Components/Users/UsersContainer";
 
 
 function App() {
@@ -19,12 +18,11 @@ function App() {
                        path="/profile"/>
                 <Route render={() => <DialogsContainer/>}
                        path="/dialogs"/>
-                <Route render={() => <UsersContainer/>}
+                <Route render={() => <UserBigContainer />}
                        path={"/users"}/>
             </div>
         </div>
     )
-
 }
 
 export default App;
