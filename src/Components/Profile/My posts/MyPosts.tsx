@@ -1,11 +1,11 @@
 import React, {ChangeEvent} from 'react';
 import s from "./MyPosts.module.css";
 import {Post} from "./Post/Post";
-import {ActionTypes, ProfilePageType} from "../../../redux/state";
+import {InitialStateType} from "../../../redux/ProfileReducer";
 
 
 type MyPostsPropsType ={
-    myPostsState: ProfilePageType
+    myPostsState: InitialStateType
     addPost: () => void
     onNewPostText: (text:string) => void
 }

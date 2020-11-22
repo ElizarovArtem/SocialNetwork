@@ -1,8 +1,18 @@
 import React from 'react';
 import s from "./ProfileInfo.module.css";
+import {ProfileType} from "../../../redux/ProfileReducer";
+import {Preloader} from "../../common/Preloader/Preloader";
 
+type ProfileInfoPropsType = {
+    profile: ProfileType | null
+}
+export function ProfileInfo(props: ProfileInfoPropsType) {
+    if(!props.profile){
+        return <Preloader/>
+    }
 
-export function ProfileInfo() {
+    let keys = Object.keys(props.profile.contacts)
+
     return (
         <div className={s.content}>
             <div>
@@ -11,7 +21,15 @@ export function ProfileInfo() {
                     width="100%"/>
             </div>
             <div className={s.descriptionBlock}>
-                Ava+Description
+                <div>
+                    <img src={props.profile.photos.large}/>
+                </div>
+                <div>Name: {props.profile.fullName}</div>
+                <div>Working status: {props.profile.lookingForAJob ? "Ready for new offers" : "Working"}</div>
+                <div>Contacts: {keys.map(k => {
+                    return <li>{k}</li>
+                })}</div>
+
             </div>
         </div>
     );

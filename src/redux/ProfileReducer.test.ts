@@ -8,7 +8,8 @@ test("post should be added", () => {
             {id: 1, message: "Hello everybody", likesCount: 23},
             {id: 2, message: "Who want's to go for a walk?", likesCount: 12},
             {id: 2, message: "Go alone", likesCount: 12},
-        ]
+        ],
+        profile: null
     }
 
     const action = AddPostActionCreator()
@@ -27,7 +28,8 @@ test("new post-text should be added", () => {
             {id: 1, message: "Hello everybody", likesCount: 23},
             {id: 2, message: "Who want's to go for a walk?", likesCount: 12},
             {id: 2, message: "Go alone", likesCount: 12},
-        ]
+        ],
+        profile: null
     }
 
     const action = ChangeNewPostTextActionCreator("Muscle")

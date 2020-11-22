@@ -1,4 +1,9 @@
-import ProfileReducer, {AddPostActionType, ChangeNewPostTextActionType, PostType} from "./ProfileReducer";
+import ProfileReducer, {
+    AddPostActionType,
+    ChangeNewPostTextActionType,
+    PostType,
+    SetUSerProfileType
+} from "./ProfileReducer";
 import MessageReducer, {
     AddNewMessageType,
     ChangeNewMessageBodyType,
@@ -28,30 +33,22 @@ export type MessagePageType = {
 export type ProfilePageType = {
     posts: Array<PostType>
     newPostText: string
+
 };
 export type SidebarPageType = {
     friends: Array<FriendsPropsType>
 };
-export type StoreType = {
+/*export type StoreType = {
     _state: RootStateType
     getState: () => RootStateType
     subscribe: (observer: (state: RootStateType) => void) => void
     _callSubscriber: (state: RootStateType) => void
     dispatch: (action: ActionTypes) => void
-}
+}*/
 
-export type ActionTypes = AddPostActionType
-    | ChangeNewPostTextActionType
-    | ChangeNewMessageBodyType
-    | AddNewMessageType
-    | FollowACType
-    | UnfollowACType
-    | SetUsersACType
-    | ChangeCurrentPageType
-    | ChangeTotalUsersCountType
-    | ToggleIsFetchingType
 
-export let store: StoreType = {
+
+/*export let store: StoreType = {
     _state: {
         messagesPage: {
             dialogs: [
@@ -97,7 +94,7 @@ export let store: StoreType = {
         this._callSubscriber = observer;
     },
     dispatch(action: ActionTypes) {
-
+                                                  //ts-ignore
         this._state.profilePage = ProfileReducer(this._state.profilePage, action);
         this._state.messagesPage = MessageReducer(this._state.messagesPage, action);
         this._state.sidebar = SidebarReducer(this._state.sidebar, action);
@@ -105,7 +102,7 @@ export let store: StoreType = {
         this._callSubscriber(this._state);
 
     }
-};
+};*/
 
 
 

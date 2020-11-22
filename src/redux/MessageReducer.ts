@@ -1,4 +1,4 @@
-import {ActionTypes} from "./state";
+import {ActionTypes} from "./redux-store";
 
 export type MessageType = {
     id: number

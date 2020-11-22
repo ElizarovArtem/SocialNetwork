@@ -2,7 +2,8 @@ import React from 'react';
 import {MyPosts} from "./MyPosts";
 import {connect} from "react-redux";
 import {AppStateType} from "../../../redux/redux-store";
-import {ActionTypes, ProfilePageType} from "../../../redux/state";
+import {ActionTypes} from "../../../redux/redux-store";
+import {InitialStateType} from "../../../redux/ProfileReducer";
 
 
 let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
@@ -12,7 +13,7 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
 }
 
 type MapStateToPropsType = {
-    myPostsState: ProfilePageType
+    myPostsState: InitialStateType
 }
 
 let mapDispatchToProps = (dispatch: (action: ActionTypes) => void): MapDispatchToPropsType => {

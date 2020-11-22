@@ -1,4 +1,4 @@
-import {ActionTypes, SidebarPageType} from "./state";
+import {ActionTypes} from "./redux-store";
 
 export type FriendsPropsType = {
     name: string

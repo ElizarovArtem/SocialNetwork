@@ -1,4 +1,4 @@
-import {ActionTypes} from "./state";
+import {ActionTypes} from "./redux-store";
 
 export type UserType = {
     id: number
