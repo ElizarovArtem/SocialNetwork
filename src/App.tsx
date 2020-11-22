@@ -5,7 +5,7 @@ import {Profile} from "./Components/Profile/Profile";
 import {Route} from "react-router-dom";
 import {DialogsContainer} from "./Components/Dialogs/DialogsContainer";
 import {NavbarContainer} from "./Components/Navbar/NavbarContainer";
-import {UserBigContainer, UsersContainer} from "./Components/Users/UsersContainer";
+import {UserBigContainer} from "./Components/Users/UsersContainer";
 import {ProfileBigContainer} from "./Components/Profile/ProfileContainer";
 
 
@@ -15,8 +15,8 @@ function App() {
             <Header/>
             <NavbarContainer/>
             <div className="app-wrapper-content">
-                <Route render={() => <ProfileBigContainer/>}
-                       path="/profile"/>
+                <Route render={() => <ProfileBigContainer />}
+                       path="/profile/:userId?"/>
                 <Route render={() => <DialogsContainer/>}
                        path="/dialogs"/>
                 <Route render={() => <UserBigContainer />}

@@ -29,6 +29,7 @@ export type InitialStateType = {
     profile: null | ProfileType
 }
 export type ProfileType = {
+    aboutMe: string
     userId: number
     lookingForAJob: boolean
     lookingForAJobDescription:string

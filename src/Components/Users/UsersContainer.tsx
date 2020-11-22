@@ -83,29 +83,6 @@ type MapStateToPropsType = {
     isFetching: boolean
 }
 
-/*let MapDispatchToProps = (dispatch: (action: ActionTypes) => void): MapDispatchToPropsType => {
-    return {
-        follow: (userID: number) => {
-            dispatch({type: "FOLLOW", userID: userID})
-        },
-        unfollow: (userID: number) => {
-            dispatch({type: "UNFOLLOW", userID: userID})
-        },
-        setUsers: (users: Array<UserType>) => {
-            dispatch({type: "SET-USERS", users: users})
-        },
-        changeCurrentPage: (newPage: number) => {
-            dispatch(changeCurrentPageAC(newPage))
-        },
-        changeTotalUsersCount: (newTotalUsersCount: number) => {
-            dispatch(changeTotalUsersCountAC(newTotalUsersCount))
-        },
-        toggleIsFetching: (isFetching: boolean) => {
-            dispatch(toggleIsFetchingAC(isFetching))
-        }
-    }
-}*/
-
 type MapDispatchToPropsType = {
     followAC: (userID: number) => void
     unfollowAC: (userID: number) => void
