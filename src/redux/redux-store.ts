@@ -9,12 +9,14 @@ import UsersReducer, {
     SetUsersACType, ToggleIsFetchingType,
     UnfollowACType
 } from "./UsersReducer";
+import {authReducer} from "./AuthReducer";
 
 let reducers = combineReducers({
     messagesPage: MessageReducer,
     profilePage: ProfileReducer,
     sidebar: SidebarReducer,
-    usersPage: UsersReducer
+    usersPage: UsersReducer,
+    auth: authReducer
 })
 
 export type AppStateType = ReturnType<typeof reducers>

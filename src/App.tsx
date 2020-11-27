@@ -7,12 +7,13 @@ import {DialogsContainer} from "./Components/Dialogs/DialogsContainer";
 import {NavbarContainer} from "./Components/Navbar/NavbarContainer";
 import {UserBigContainer} from "./Components/Users/UsersContainer";
 import {ProfileBigContainer} from "./Components/Profile/ProfileContainer";
+import {HeaderBigContainer} from "./Components/Header/HeaderContainer";
 
 
 function App() {
     return (
         <div className="app-wrapper">
-            <Header/>
+            <HeaderBigContainer/>
             <NavbarContainer/>
             <div className="app-wrapper-content">
                 <Route render={() => <ProfileBigContainer />}
