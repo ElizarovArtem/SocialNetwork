@@ -9,9 +9,8 @@ import {
     toggleIsFetchingAC, unfollowAC,
     UserType
 } from "../../redux/UsersReducer";
-import axios from "axios";
 import {Preloader} from "../common/Preloader/Preloader";
-
+import {usersAPI} from "../../api/api";
 
 
 type UsersContainerPropsType = {
@@ -31,25 +30,19 @@ type UsersContainerPropsType = {
 export class UsersContainer extends React.Component<UsersContainerPropsType, {}> {
     componentDidMount() {
         this.props.toggleIsFetchingAC(true)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=1&count=${this.props.pageSize}`, {
-            withCredentials: true
-        })
-            .then(response => {
+        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
                 this.props.toggleIsFetchingAC(false)
-                this.props.setUsersAC(response.data.items)
-                this.props.changeTotalUsersCountAC(response.data.totalCount)
+                this.props.setUsersAC(data.items)
+                this.props.changeTotalUsersCountAC(data.totalCount)
             })
     }
 
     onPageChange = (newPage: number) => {
         this.props.toggleIsFetchingAC(true)
         this.props.changeCurrentPageAC(newPage)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${newPage}&count=${this.props.pageSize}`, {
-            withCredentials: true
-        })
-            .then(response => {
+        usersAPI.getUsers(newPage, this.props.pageSize).then(data => {
                 this.props.toggleIsFetchingAC(false)
-                this.props.setUsersAC(response.data.items)
+                this.props.setUsersAC(data.items)
             })
     }
 
