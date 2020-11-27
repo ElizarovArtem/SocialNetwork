@@ -31,7 +31,9 @@ type UsersContainerPropsType = {
 export class UsersContainer extends React.Component<UsersContainerPropsType, {}> {
     componentDidMount() {
         this.props.toggleIsFetchingAC(true)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=1&count=${this.props.pageSize}`)
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=1&count=${this.props.pageSize}`, {
+            withCredentials: true
+        })
             .then(response => {
                 this.props.toggleIsFetchingAC(false)
                 this.props.setUsersAC(response.data.items)
@@ -42,7 +44,9 @@ export class UsersContainer extends React.Component<UsersContainerPropsType, {}>
     onPageChange = (newPage: number) => {
         this.props.toggleIsFetchingAC(true)
         this.props.changeCurrentPageAC(newPage)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${newPage}&count=${this.props.pageSize}`)
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${newPage}&count=${this.props.pageSize}`, {
+            withCredentials: true
+        })
             .then(response => {
                 this.props.toggleIsFetchingAC(false)
                 this.props.setUsersAC(response.data.items)
