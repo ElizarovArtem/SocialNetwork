@@ -14,18 +14,21 @@ export type UsersPropsType = {
     follow: (id: number) => void
     unfollow: (id: number) => void
     onPageChange: (newPage: number) => void
+    toggleFollowingProgress: boolean
+    toggleFollowingProgressAC: (isFollowing: boolean, uId: number) => void
+    followingUsers: number[]
 }
 
 
-export function Users (props: UsersPropsType) {
+export function Users(props: UsersPropsType) {
 
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
     const pages = [];
-    for (let i = 1; i <= pagesCount; i++){
+    for (let i = 1; i <= pagesCount; i++) {
         pages.push(i);
     }
 
-    return(
+    return (
         <div>
             <div className={s.pages}>
                 {pages.map(p => {
@@ -40,25 +43,34 @@ export function Users (props: UsersPropsType) {
                         <div>
                             <div>
                                 <NavLink to={'/profile/' + u.id}>
-                                <img className={s.photo} src={u.photos.small !== null ? u.photos.small : userPhoto}/>
+                                    <img className={s.photo}
+                                         src={u.photos.small !== null ? u.photos.small : userPhoto}/>
                                 </NavLink>
                             </div>
                             <div>
                                 {u.followed ?
-                                    <button onClick={() => {
-                                        followingAPI.unfollow(u.id).then(data => {
-                                                if(data.resultCode == 0){
+                                    <button
+                                        disabled={props.followingUsers.find(n => n === u.id) ? true : false}
+                                        onClick={() => {
+                                            props.toggleFollowingProgressAC(true, u.id)
+                                            followingAPI.unfollow(u.id).then(data => {
+                                                if (data.resultCode == 0) {
                                                     props.unfollow(u.id)
                                                 }
+                                                props.toggleFollowingProgressAC(false, u.id)
                                             })
-                                    }}>Unfollow</button> :
-                                    <button onClick={() => {
-                                        followingAPI.follow(u.id).then(data => {
-                                                if(data.resultCode == 0){
+                                        }}>Unfollow</button> :
+                                    <button
+                                        disabled={props.followingUsers.find(n => n === u.id) ? true : false}
+                                        onClick={() => {
+                                            props.toggleFollowingProgressAC(true, u.id)
+                                            followingAPI.follow(u.id).then(data => {
+                                                if (data.resultCode == 0) {
                                                     props.follow(u.id)
                                                 }
+                                                props.toggleFollowingProgressAC(false, u.id)
                                             })
-                                    }}>Follow</button>
+                                        }}>Follow</button>
                                 }
 
                             </div>

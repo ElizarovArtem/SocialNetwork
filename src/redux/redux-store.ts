@@ -6,7 +6,7 @@ import UsersReducer, {
     ChangeCurrentPageType,
     ChangeTotalUsersCountType,
     FollowACType,
-    SetUsersACType, ToggleIsFetchingType,
+    SetUsersACType, ToggleFollowingProgressType, ToggleIsFetchingType,
     UnfollowACType
 } from "./UsersReducer";
 import {authReducer} from "./AuthReducer";
@@ -36,3 +36,4 @@ export type ActionTypes = AddPostActionType
     | ChangeTotalUsersCountType
     | ToggleIsFetchingType
     | SetUSerProfileType
+    | ToggleFollowingProgressType

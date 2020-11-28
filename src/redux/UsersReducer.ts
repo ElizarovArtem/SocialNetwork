@@ -23,13 +23,16 @@ const SET_USERS = "SET-USERS"
 const CHANGE_CURRENT_PAGE = "CHANGE-CURRENT-PAGE"
 const CHANGE_TOTAL_USERS_COUNT = "CHANGE-TOTAL-USERS-COUNT"
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING"
+const TOGGLE_IS_FOLLOWING_PROGRESS = "TOGGLE_IS_FOLLOWING_PROGRESS"
 
 let initialState: InitialStateType = {
     users: [],
     pageSize: 100,
     totalUsersCount: 0,
     currentPage: 1,
-    isFetching: false
+    isFetching: false,
+    toggleFollowingProgress: false,
+    followingUsers: []
 }
 
 export type InitialStateType = {
@@ -38,6 +41,8 @@ export type InitialStateType = {
     pageSize: number
     currentPage: number
     isFetching: boolean
+    toggleFollowingProgress: boolean
+    followingUsers: number[]
 }
 
 export const UsersReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
@@ -70,6 +75,12 @@ export const UsersReducer = (state: InitialStateType = initialState, action: Act
             return { ...state, totalUsersCount: action.newUsersCount}
         case "TOGGLE-IS-FETCHING":
             return { ...state, isFetching: action.isFetching }
+        case "TOGGLE_IS_FOLLOWING_PROGRESS":
+            return { ...state,
+                toggleFollowingProgress: action.isFollowing,
+                followingUsers: action.isFollowing
+                    ? [...state.followingUsers, action.uId]
+                    : state.followingUsers.filter(n => n !== action.uId) }
         default:
             return state
     }
@@ -93,7 +104,6 @@ export const setUsersAC = (users: Array<UserType>) => {
         users: users
     } as const
 };
-
 export type ChangeCurrentPageType = {
     type: "CHANGE-CURRENT-PAGE"
     newPage: number
@@ -122,6 +132,18 @@ export const toggleIsFetchingAC = (isFetching: boolean): ToggleIsFetchingType =>
     return {
         type: TOGGLE_IS_FETCHING,
         isFetching
+    }
+};
+export type ToggleFollowingProgressType = {
+    type: "TOGGLE_IS_FOLLOWING_PROGRESS"
+    isFollowing: boolean
+    uId: number
+}
+export const toggleFollowingProgressAC = (isFollowing: boolean, uId: number): ToggleFollowingProgressType => {
+    return {
+        type: TOGGLE_IS_FOLLOWING_PROGRESS,
+        isFollowing,
+        uId
     }
 };
 
