@@ -1,4 +1,6 @@
-import {ActionTypes} from "./redux-store";
+import {ActionTypes, AppStateType} from "./redux-store";
+import {ThunkAction, ThunkDispatch} from "redux-thunk";
+import {usersAPI} from "../api/api";
 
 export type PostType = {
     id: number
@@ -88,11 +90,21 @@ export type SetUSerProfileType = {
     type: "SET-USER-PROFILE"
     profile: ProfileType
 }
-export const setUSerProfileAC = (profile: ProfileType) => {
+export const setUSerProfileAC = (profile: ProfileType): SetUSerProfileType => {
     return {
         type: SET_USER_PROFILE,
         profile
     }
 };
+
+export type SetUserProfileThunkType = ThunkAction<void, AppStateType, { userId: string } , ActionTypes>
+export const setUserProfileThunk = (userId: string): SetUserProfileThunkType => {
+    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: ()=> AppStateType) => {
+        usersAPI.openUserProfile(userId)
+            .then(data => {
+                dispatch(setUSerProfileAC(data.data))
+            })
+    }
+}
 
 export default ProfileReducer;

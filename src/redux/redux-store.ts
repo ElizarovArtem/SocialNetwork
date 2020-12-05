@@ -1,4 +1,4 @@
-import {combineReducers, createStore} from "redux";
+import {applyMiddleware, combineReducers, createStore} from "redux";
 import MessageReducer, {AddNewMessageType, ChangeNewMessageBodyType} from "./MessageReducer";
 import ProfileReducer, {AddPostActionType, ChangeNewPostTextActionType, SetUSerProfileType} from "./ProfileReducer";
 import SidebarReducer from "./SidebarReducer";
@@ -9,7 +9,8 @@ import UsersReducer, {
     SetUsersACType, ToggleFollowingProgressType, ToggleIsFetchingType,
     UnfollowACType
 } from "./UsersReducer";
-import {authReducer} from "./AuthReducer";
+import {authReducer, SetUserDataType} from "./AuthReducer";
+import thunkMiddleware from "redux-thunk"
 
 let reducers = combineReducers({
     messagesPage: MessageReducer,
@@ -21,7 +22,7 @@ let reducers = combineReducers({
 
 export type AppStateType = ReturnType<typeof reducers>
 
-let store = createStore(reducers)
+let store = createStore(reducers, applyMiddleware(thunkMiddleware))
 
 export default store;
 
@@ -37,3 +38,4 @@ export type ActionTypes = AddPostActionType
     | ToggleIsFetchingType
     | SetUSerProfileType
     | ToggleFollowingProgressType
+    |SetUserDataType

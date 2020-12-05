@@ -13,23 +13,24 @@ export const usersAPI = {
     getUsers (currentPage: number = 1, pageSize: number = 100) {
         return instance.get(`users?page=${currentPage}&count=${pageSize}`)
             .then(response => response.data)
-    }
-}
-
-export const authAPI = {
-    authMe() {
-        return instance.get(`auth/me`)
-            .then(response => response.data)
-    }
-}
-
-export const followingAPI = {
+    },
     follow(id:number) {
         return instance.post(`follow/${id}`)
             .then(response => response.data)
     },
     unfollow(id:number) {
         return instance.delete(`follow/${id}`)
+            .then(response => response.data)
+    },
+    openUserProfile(id: string) {
+        return instance.get(`profile/${id}`)
+            .then(response => response)
+    }
+}
+
+export const authAPI = {
+    authMe() {
+        return instance.get(`auth/me`)
             .then(response => response.data)
     }
 }

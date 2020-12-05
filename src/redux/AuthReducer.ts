@@ -1,3 +1,7 @@
+import {ThunkAction, ThunkDispatch} from "redux-thunk";
+import {ActionTypes, AppStateType} from "./redux-store";
+import {authAPI} from "../api/api";
+
 const SET_USER_DATA = "SET_USER_DATA"
 
 type InitialStateType = {
@@ -13,9 +17,7 @@ const initialState: InitialStateType = {
     isAuth: false
 }
 
-type ActionsType = SetUserDataType
-
-export const authReducer = (state: InitialStateType = initialState, action: ActionsType) => {
+export const authReducer = (state: InitialStateType = initialState, action: ActionTypes) => {
     switch (action.type){
         case "SET_USER_DATA":
             return{
@@ -28,7 +30,7 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
     }
 }
 
-type SetUserDataType = {
+export type SetUserDataType = {
     type: "SET_USER_DATA"
     data: {
         id: number
@@ -44,5 +46,17 @@ export const setUserDataAC = (id: number, email: string, login: string): SetUser
             email,
             login
         }
+    }
+}
+
+export type AuthMeThunkType = ThunkAction<void, AppStateType, {} , ActionTypes>
+export const authMeThunk = (): AuthMeThunkType => {
+    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: ()=> AppStateType) => {
+        authAPI.authMe().then(data => {
+            if(data.resultCode === 0){
+                let {id, login, email} = data.data
+                dispatch(setUserDataAC(id, email, login))
+            }
+        })
     }
 }
