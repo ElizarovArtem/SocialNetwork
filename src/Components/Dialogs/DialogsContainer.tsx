@@ -7,12 +7,14 @@ import {InitialStateType} from "../../redux/MessageReducer";
 
 let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
-        dialogsState: state.messagesPage
+        dialogsState: state.messagesPage,
+        isAuth: state.auth.isAuth
     }
 }
 
 type MapStateToPropsType = {
     dialogsState: InitialStateType
+    isAuth: boolean
 }
 
 let mapDispatchToProps = (dispatch: (action: ActionTypes) => void): MapDispatchToPropsType => {
@@ -35,4 +37,8 @@ type MapDispatchToPropsType = {
     onSendMessageKeyPress: () => void
 }
 
-export const DialogsContainer = connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(mapStateToProps, mapDispatchToProps)(Dialogs)
+export const DialogsContainer =
+    connect<MapStateToPropsType,
+        MapDispatchToPropsType,
+        {},
+        AppStateType>(mapStateToProps, mapDispatchToProps)(Dialogs)

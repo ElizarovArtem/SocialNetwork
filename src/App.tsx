@@ -6,6 +6,7 @@ import {NavbarContainer} from "./Components/Navbar/NavbarContainer";
 import {UserBigContainer} from "./Components/Users/UsersContainer";
 import {ProfileBigContainer} from "./Components/Profile/ProfileContainer";
 import {HeaderBigContainer} from "./Components/Header/HeaderContainer";
+import {Login} from "./Components/Login/Login";
 
 
 function App() {
@@ -14,12 +15,14 @@ function App() {
             <HeaderBigContainer/>
             <NavbarContainer/>
             <div className="app-wrapper-content">
-                <Route render={() => <ProfileBigContainer />}
+                <Route render={() => <ProfileBigContainer/>}
                        path="/profile/:userId?"/>
                 <Route render={() => <DialogsContainer/>}
                        path="/dialogs"/>
-                <Route render={() => <UserBigContainer />}
+                <Route render={() => <UserBigContainer/>}
                        path={"/users"}/>
+                <Route render={() => <Login/>}
+                       path={"/login"}/>
             </div>
         </div>
     )

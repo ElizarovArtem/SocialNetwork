@@ -17,7 +17,7 @@ export function Header(props: HeaderPropsType) {
                 {props.isAuth ?
                     props.login
                     :
-                    <NavLink to={"/auth"}>Login</NavLink>
+                    <NavLink to={"/login"}>Login</NavLink>
                 }
             </div>
         </header>
