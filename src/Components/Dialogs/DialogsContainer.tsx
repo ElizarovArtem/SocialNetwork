@@ -3,6 +3,8 @@ import {Dialogs} from "./Dialogs";
 import {connect} from "react-redux";
 import {ActionTypes, AppStateType} from "../../redux/redux-store";
 import {InitialStateType} from "../../redux/MessageReducer";
+import {WithAuthRedirect} from "../../hoc/WithAuthRedirect";
+import {compose} from "redux";
 
 
 let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
@@ -37,8 +39,10 @@ type MapDispatchToPropsType = {
     onSendMessageKeyPress: () => void
 }
 
-export const DialogsContainer =
+export const DialogsContainer = compose<React.ComponentType>(
     connect<MapStateToPropsType,
         MapDispatchToPropsType,
         {},
-        AppStateType>(mapStateToProps, mapDispatchToProps)(Dialogs)
+        AppStateType>(mapStateToProps, mapDispatchToProps),
+    WithAuthRedirect
+)(Dialogs)
