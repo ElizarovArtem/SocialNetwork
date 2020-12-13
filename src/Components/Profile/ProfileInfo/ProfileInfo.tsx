@@ -2,6 +2,7 @@ import React from 'react';
 import s from "./ProfileInfo.module.css";
 import {ProfileType} from "../../../redux/ProfileReducer";
 import {Preloader} from "../../common/Preloader/Preloader";
+import {Status} from "./Status/Status";
 
 type ProfileInfoPropsType = {
     profile: ProfileType | null
@@ -25,7 +26,7 @@ export function ProfileInfo(props: ProfileInfoPropsType) {
                     <img src={props.profile.photos.large}/>
                 </div>
                 <div>Name: {props.profile.fullName}</div>
-                <div>Status: {props.profile.aboutMe}</div>
+                <div>Status:<Status status={'yoyoyoyoyo'}/></div>
                 <div>Working status: {props.profile.lookingForAJob ? "Ready for new offers" : "Working"}</div>
                 <div>Contacts: {keys.map(k => {
                     return <li>{k}</li>
