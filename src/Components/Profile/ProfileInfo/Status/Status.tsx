@@ -30,6 +30,14 @@ export class Status extends React.Component<StatusPropsType> {
        this.props.updateStatusThunk(this.state.status)
    }
 
+   componentDidUpdate(prevProps: Readonly<StatusPropsType>, prevState: Readonly<StatusPropsType>) {
+        if(prevProps.status !== this.props.status) {
+            this.setState({
+                status: this.props.status
+            })
+        }
+   }
+
     render() {
         return (
             <div>
