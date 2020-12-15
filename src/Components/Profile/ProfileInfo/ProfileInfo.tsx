@@ -6,6 +6,8 @@ import {Status} from "./Status/Status";
 
 type ProfileInfoPropsType = {
     profile: ProfileType | null
+    status: string
+    updateStatusThunk: (status: string) => void
 }
 export function ProfileInfo(props: ProfileInfoPropsType) {
     if(!props.profile){
@@ -26,7 +28,7 @@ export function ProfileInfo(props: ProfileInfoPropsType) {
                     <img src={props.profile.photos.large}/>
                 </div>
                 <div>Name: {props.profile.fullName}</div>
-                <div>Status:<Status status={'yoyoyoyoyo'}/></div>
+                <Status status={props.status} updateStatusThunk={props.updateStatusThunk}/>
                 <div>Working status: {props.profile.lookingForAJob ? "Ready for new offers" : "Working"}</div>
                 <div>Contacts: {keys.map(k => {
                     return <li>{k}</li>

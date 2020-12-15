@@ -1,6 +1,11 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import MessageReducer, {AddNewMessageType, ChangeNewMessageBodyType} from "./MessageReducer";
-import ProfileReducer, {AddPostActionType, ChangeNewPostTextActionType, SetUSerProfileType} from "./ProfileReducer";
+import ProfileReducer, {
+    AddPostActionType,
+    ChangeNewPostTextActionType,
+    SetStatusType,
+    SetUSerProfileType
+} from "./ProfileReducer";
 import SidebarReducer from "./SidebarReducer";
 import UsersReducer, {
     ChangeCurrentPageType,
@@ -38,4 +43,5 @@ export type ActionTypes = AddPostActionType
     | ToggleIsFetchingType
     | SetUSerProfileType
     | ToggleFollowingProgressType
-    |SetUserDataType
+    | SetUserDataType
+    | SetStatusType

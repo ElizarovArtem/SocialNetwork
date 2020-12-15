@@ -1,12 +1,20 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 
 type StatusPropsType = {
     status: string
+    updateStatusThunk: (status: string) => void
 }
 
 export class Status extends React.Component<StatusPropsType> {
     state = {
-        editMode: false
+        editMode: false,
+        status: this.props.status
+    }
+
+    onChange = (e: ChangeEvent<HTMLInputElement>) => {
+        this.setState({
+            status: e.currentTarget.value
+        })
     }
 
    activateEditMode = () => {
@@ -15,10 +23,11 @@ export class Status extends React.Component<StatusPropsType> {
         })
    }
 
-   activateViewMode() {
+   activateViewMode = () => {
        this.setState({
            editMode: false
        })
+       this.props.updateStatusThunk(this.state.status)
    }
 
     render() {
@@ -26,12 +35,18 @@ export class Status extends React.Component<StatusPropsType> {
             <div>
                 {!this.state.editMode &&
                         <div>
-                            <span onDoubleClick={this.activateEditMode.bind(this)}>{this.props.status}</span>
+                            <span onDoubleClick={this.activateEditMode}>{this.state.status || "-----"}</span>
                         </div>
                 }
                 {this.state.editMode &&
                     <div>
-                        <input type="text" value={this.props.status} onBlur={this.activateViewMode.bind(this)} autoFocus/>
+                        <input
+                            type="text"
+                            value={this.state.status}
+                            onChange={this.onChange}
+                            onBlur={this.activateViewMode}
+                            autoFocus
+                        />
                     </div>
                 }
             </div>

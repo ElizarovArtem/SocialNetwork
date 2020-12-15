@@ -23,8 +23,20 @@ export const usersAPI = {
             .then(response => response.data)
     },
     openUserProfile(id: string) {
+        console.log("This method is obsolete, use the same method from profileAPI")
+        return profileAPI.openUserProfile(id)
+    }
+}
+
+export const profileAPI = {
+    openUserProfile(id: string) {
         return instance.get(`profile/${id}`)
-            .then(response => response)
+    },
+    getStatus(userId: string) {
+        return instance.get(`profile/status/${userId}`)
+    },
+    updateStatus(status: string) {
+        return instance.put(`profile/status`,{status: status})
     }
 }
 

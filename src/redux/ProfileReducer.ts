@@ -1,19 +1,14 @@
 import {ActionTypes, AppStateType} from "./redux-store";
 import {ThunkAction, ThunkDispatch} from "redux-thunk";
-import {usersAPI} from "../api/api";
-
-export type PostType = {
-    id: number
-    message: string
-    likesCount: number
-}
+import {profileAPI, usersAPI} from "../api/api";
 
 export type AddPostActionType = ReturnType<typeof AddPostActionCreator>
-export type ChangeNewPostTextActionType = ReturnType<typeof ChangeNewPostTextActionCreator>
+export type ChangeNewPostTextActionType = ReturnType<typeof changeNewPostTextActionCreator>
 
 const ADD_POST = "ADD-POST"
 const CHANGE_NEW_POST_TEXT = "CHANGE-NEW-POST-TEXT"
 const SET_USER_PROFILE = "SET-USER-PROFILE"
+const SET_STATUS = "SET_STATUS"
 
 let initialState: InitialStateType = {
     newPostText: "it-kamasutra",
@@ -22,13 +17,21 @@ let initialState: InitialStateType = {
         {id: 2, message: "Who want's to go for a walk?", likesCount: 12},
         {id: 2, message: "Go alone", likesCount: 12},
     ],
-    profile: null
+    profile: null,
+    status: ""
+}
+
+export type PostType = {
+    id: number
+    message: string
+    likesCount: number
 }
 
 export type InitialStateType = {
     posts: Array<PostType>
     newPostText: string
     profile: null | ProfileType
+    status: string
 }
 export type ProfileType = {
     aboutMe: string
@@ -69,8 +72,22 @@ export const ProfileReducer = (state: InitialStateType = initialState, action: A
         case "SET-USER-PROFILE": {
             return {...state, profile: action.profile}
         }
+        case "SET_STATUS":{
+            return { ...state, status: action.status}
+        }
         default:
             return state;
+    }
+}
+
+export type SetStatusType = {
+    type: "SET_STATUS"
+    status: string
+}
+export const setStatusAC = (status: string): SetStatusType => {
+    return{
+        type: SET_STATUS,
+        status
     }
 }
 
@@ -79,7 +96,7 @@ export const AddPostActionCreator = () => {
         type: ADD_POST
     } as const
 };
-export const ChangeNewPostTextActionCreator = (postText: string) => {
+export const changeNewPostTextActionCreator = (postText: string) => {
     return {
         type: CHANGE_NEW_POST_TEXT,
         newText: postText
@@ -103,6 +120,29 @@ export const setUserProfileThunk = (userId: string): SetUserProfileThunkType => 
         usersAPI.openUserProfile(userId)
             .then(data => {
                 dispatch(setUSerProfileAC(data.data))
+            })
+    }
+}
+
+export type SetStatusThunkType = ThunkAction<void, AppStateType, { userId: string } , ActionTypes>
+export const setStatusThunk = (userId: string): SetStatusThunkType => {
+    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: ()=> AppStateType) => {
+        profileAPI.getStatus(userId)
+            .then(data => {
+                debugger
+                dispatch(setStatusAC(data.data))
+            })
+    }
+}
+export type UpdateStatusThunkType = ThunkAction<void, AppStateType, { status: string } , ActionTypes>
+export const updateStatusThunk = (status: string): UpdateStatusThunkType => {
+    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: ()=> AppStateType) => {
+        profileAPI.updateStatus(status)
+            .then(data => {
+                debugger
+                if(data.data.resultCode === 0) {
+                    dispatch(setStatusAC(status))
+                }
             })
     }
 }

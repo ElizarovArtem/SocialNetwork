@@ -1,4 +1,4 @@
-import ProfileReducer, {AddPostActionCreator, ChangeNewPostTextActionCreator, InitialStateType} from "./ProfileReducer";
+import ProfileReducer, {AddPostActionCreator, changeNewPostTextActionCreator, InitialStateType} from "./ProfileReducer";
 
 
 test("post should be added", () => {
@@ -32,7 +32,7 @@ test("new post-text should be added", () => {
         profile: null
     }
 
-    const action = ChangeNewPostTextActionCreator("Muscle")
+    const action = changeNewPostTextActionCreator("Muscle")
 
     const endState = ProfileReducer(initialState, action)
 
