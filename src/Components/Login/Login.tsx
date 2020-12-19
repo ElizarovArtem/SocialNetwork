@@ -2,7 +2,9 @@ import React from "react";
 import {InjectedFormProps, Field, reduxForm} from "redux-form";
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/redux-store";
-import {authMeThunk, logInThunk} from "../../redux/AuthReducer";
+import {logInThunk} from "../../redux/AuthReducer";
+import {Input} from "../common/FormsControls/FormsControls";
+import {maxLengthCreator, required} from "../../utils/validators/validators";
 
 
 type FormDataType = {
@@ -11,14 +13,16 @@ type FormDataType = {
     rememberMe: boolean
 }
 
+const maxLength20 = maxLengthCreator(20)
+
 export const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
     return(
             <form onSubmit={props.handleSubmit}>
                 <div>
-                    <Field placeholder={"Login"} component={"input"} name={"login"}/>
+                    <Field placeholder={"Login"} component={Input} validate={[required, maxLength20]} name={"login"}/>
                 </div>
                 <div>
-                    <Field placeholder={"Password"} component={"input"} name={"password"}/>
+                    <Field placeholder={"Password"} component={Input} validate={[required, maxLength20]} name={"password"}/>
                 </div>
                 <div>
                     <Field type={"checkbox"} component={"input"} name={"rememberMe"}/> remember me

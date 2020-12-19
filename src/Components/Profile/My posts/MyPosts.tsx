@@ -3,6 +3,8 @@ import s from "./MyPosts.module.css";
 import {Post} from "./Post/Post";
 import {InitialStateType} from "../../../redux/ProfileReducer";
 import {reduxForm, Field, InjectedFormProps} from "redux-form";
+import {maxLengthCreator, required} from "../../../utils/validators/validators";
+import {Textarea} from "../../common/FormsControls/FormsControls";
 
 
 type MyPostsPropsType ={
@@ -21,7 +23,7 @@ export function MyPosts(props: MyPostsPropsType) {
     return (
         <div className={s.postsBlock}>
             <h3>MY POSTS</h3>
-           <ReduxPostField onSubmit={onAddPost}/>
+           <ReduxPostField onSubmit={onAddPost} />
             <div className={s.posts}>
                 {postElements}
             </div>
@@ -33,13 +35,17 @@ type NewPostDataType = {
     mewPostText: string
 }
 
+const maxLength10 = maxLengthCreator(10)
+
 export const PostField = (props: InjectedFormProps<NewPostDataType>) => {
+
     return (
         <form onSubmit={props.handleSubmit}>
             <Field className={s.messageArea}
-                   component={"textarea"}
+                   component={Textarea}
                    name={"mewPostText"}
                    placeholder={"Add new post"}
+                   validate={[required, maxLength10]}
             />
             <div>
                 <button className={s.submitButton}>Submit</button>
