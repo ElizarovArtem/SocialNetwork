@@ -3,15 +3,12 @@ import {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {profileAPI, usersAPI} from "../api/api";
 
 export type AddPostActionType = ReturnType<typeof AddPostActionCreator>
-export type ChangeNewPostTextActionType = ReturnType<typeof changeNewPostTextActionCreator>
 
 const ADD_POST = "ADD-POST"
-const CHANGE_NEW_POST_TEXT = "CHANGE-NEW-POST-TEXT"
 const SET_USER_PROFILE = "SET-USER-PROFILE"
 const SET_STATUS = "SET_STATUS"
 
 let initialState: InitialStateType = {
-    newPostText: "it-kamasutra",
     posts: [
         {id: 1, message: "Hello everybody", likesCount: 23},
         {id: 2, message: "Who want's to go for a walk?", likesCount: 12},
@@ -29,7 +26,6 @@ export type PostType = {
 
 export type InitialStateType = {
     posts: Array<PostType>
-    newPostText: string
     profile: null | ProfileType
     status: string
 }
@@ -56,17 +52,10 @@ export type ProfileType = {
 export const ProfileReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
         case ADD_POST: {
-            let newPost: PostType = {id: 5, message: state.newPostText, likesCount: 0};
+            let newPost: PostType = {id: 5, message: action.newPostText, likesCount: 0};
             return {
                 ...state,
-                posts: [...state.posts, newPost],
-                newPostText: ''
-            }
-        }
-        case CHANGE_NEW_POST_TEXT: {
-            return {
-                ...state,
-                newPostText: action.newText
+                posts: [...state.posts, newPost]
             }
         }
         case "SET-USER-PROFILE": {
@@ -91,15 +80,10 @@ export const setStatusAC = (status: string): SetStatusType => {
     }
 }
 
-export const AddPostActionCreator = () => {
+export const AddPostActionCreator = (newPostText: string) => {
     return {
-        type: ADD_POST
-    } as const
-};
-export const changeNewPostTextActionCreator = (postText: string) => {
-    return {
-        type: CHANGE_NEW_POST_TEXT,
-        newText: postText
+        type: ADD_POST,
+        newPostText
     } as const
 };
 

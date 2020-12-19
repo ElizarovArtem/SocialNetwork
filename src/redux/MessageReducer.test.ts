@@ -1,4 +1,4 @@
-import MessageReducer, {AddNewMessageCreator, ChangeNewMessageBodyCreator, InitialStateType} from "./MessageReducer";
+import MessageReducer, {AddNewMessageAC, ChangeNewMessageBodyCreator, InitialStateType} from "./MessageReducer";
 
 test("message body should be updated", () => {
     let initialState: InitialStateType = {
@@ -43,7 +43,7 @@ test("new message should be added", () => {
         newMessageBody: "Hello"
     }
 
-    const action = AddNewMessageCreator()
+    const action = AddNewMessageAC()
 
     const endState = MessageReducer(initialState, action)
 

@@ -6,7 +6,7 @@ import {NavbarContainer} from "./Components/Navbar/NavbarContainer";
 import {UserBigContainer} from "./Components/Users/UsersContainer";
 import {ProfileBigContainer} from "./Components/Profile/ProfileContainer";
 import {HeaderBigContainer} from "./Components/Header/HeaderContainer";
-import {Login} from "./Components/Login/Login";
+import {LoginContainer} from "./Components/Login/Login";
 
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
                        path="/dialogs"/>
                 <Route render={() => <UserBigContainer/>}
                        path={"/users"}/>
-                <Route render={() => <Login/>}
+                <Route render={() => <LoginContainer/>}
                        path={"/login"}/>
             </div>
         </div>

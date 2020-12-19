@@ -18,18 +18,14 @@ type MapStateToPropsType = {
 
 let mapDispatchToProps = (dispatch: (action: ActionTypes) => void): MapDispatchToPropsType => {
     return {
-        addPost: () => {
-            dispatch({type: "ADD-POST"});
-        },
-        onNewPostText: (text: string) => {
-            dispatch({type: "CHANGE-NEW-POST-TEXT", newText: text});
+        addPost: (newPostText: string) => {
+            dispatch({type: "ADD-POST", newPostText});
         }
     }
 }
 
 type MapDispatchToPropsType = {
-    addPost: () => void
-    onNewPostText: (text: string) => void
+    addPost: (newPostText: string) => void
 }
 
 export const MyPostsContainer = connect<MapStateToPropsType,MapDispatchToPropsType, {}, AppStateType>(mapStateToProps, mapDispatchToProps)(MyPosts)

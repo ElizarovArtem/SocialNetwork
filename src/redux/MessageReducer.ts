@@ -10,13 +10,9 @@ export type DialogItemType = {
     id: string
 }
 
-export type ChangeNewMessageBodyType = ReturnType<typeof ChangeNewMessageBodyCreator>
-export type AddNewMessageType = ReturnType<typeof AddNewMessageCreator>
+export type AddNewMessageType = ReturnType<typeof AddNewMessageAC>
 
-const CHANGE_NEW_MESSAGE_BODY = "CHANGE-NEW-MESSAGE-BODY"
 const ADD_NEW_MESSAGE = "ADD-NEW-MESSAGE"
-
-
 
 let initialState: InitialStateType = {
     dialogs: [
@@ -30,31 +26,22 @@ let initialState: InitialStateType = {
         {id: 3, message: "Lets go", owner: "second"},
         {id: 4, message: "Lets go", owner: "second"},
         {id: 5, message: "Lets go", owner: "first"},
-    ],
-    newMessageBody: ""
+    ]
 }
 
 export type InitialStateType = {
     dialogs: Array<DialogItemType>,
-    messages: Array<MessageType>,
-    newMessageBody: string
+    messages: Array<MessageType>
 }
 
 const MessageReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
-        case CHANGE_NEW_MESSAGE_BODY: {
-            return {
-                ...state,
-                newMessageBody: action.body
-            }
-        }
         case ADD_NEW_MESSAGE: {
-            if (state.newMessageBody !== ''){
-                let newMessage: MessageType = {id: 6, message: state.newMessageBody, owner: "first"};
+            if (action.newMessage !== ''){
+                let newMessage: MessageType = {id: 6, message: action.newMessage, owner: "first"};
                 return {
                     ...state,
-                    messages: [...state.messages, newMessage],
-                    newMessageBody: ""
+                    messages: [...state.messages, newMessage]
                 }
             }
             return state
@@ -64,15 +51,10 @@ const MessageReducer = (state: InitialStateType = initialState, action: ActionTy
     }
 }
 
-export const ChangeNewMessageBodyCreator = (body: string) => {
+export const AddNewMessageAC = (newMessage: string) => {
     return {
-        type: CHANGE_NEW_MESSAGE_BODY,
-        body: body
-    } as const
-};
-export const AddNewMessageCreator = () => {
-    return {
-        type: ADD_NEW_MESSAGE
+        type: ADD_NEW_MESSAGE,
+        newMessage
     } as const
 };
 

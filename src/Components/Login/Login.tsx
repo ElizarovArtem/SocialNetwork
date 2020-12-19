@@ -1,17 +1,9 @@
 import React from "react";
 import {InjectedFormProps, Field, reduxForm} from "redux-form";
+import {connect} from "react-redux";
+import {AppStateType} from "../../redux/redux-store";
+import {authMeThunk, logInThunk} from "../../redux/AuthReducer";
 
-export const Login = () => {
-    const onSubmit = (formData: FormDataType) => {
-        console.log(formData)
-    }
-    return(
-        <div>
-            <h1>LOGIN</h1>
-            <LoginReduxForm onSubmit={onSubmit}/>
-        </div>
-    )
-}
 
 type FormDataType = {
     login: string
@@ -39,3 +31,35 @@ export const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
 }
 
 export const LoginReduxForm = reduxForm<FormDataType>({ form: "login" })(LoginForm)
+
+type LoginPropsType = MapDispatchToPropsType & MapStateToPropsType
+
+export const Login = (props: LoginPropsType) => {
+    const onSubmit = (formData: FormDataType) => {
+        props.logInThunk(formData.login, formData.password, formData.rememberMe)
+    }
+
+    return(
+        <div>
+            <h1>LOGIN</h1>
+            <LoginReduxForm onSubmit={onSubmit}/>
+        </div>
+    )
+}
+
+type MapStateToPropsType = {
+
+}
+type MapDispatchToPropsType = {
+    logInThunk: (email: string, password: string, rememberMe: boolean) => void
+}
+
+const MapStateToProps = (state: AppStateType): MapStateToPropsType => {
+    return {
+
+    }
+}
+
+export const LoginContainer = connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>
+(MapStateToProps,{logInThunk})
+(Login)

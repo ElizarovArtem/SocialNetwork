@@ -21,22 +21,14 @@ type MapStateToPropsType = {
 
 let mapDispatchToProps = (dispatch: (action: ActionTypes) => void): MapDispatchToPropsType => {
     return {
-        onChangeNewMessageBody: (text: string) => {
-            dispatch({type: "CHANGE-NEW-MESSAGE-BODY", body: text});
-        },
-        onSendMessage: () => {
-            dispatch({type: "ADD-NEW-MESSAGE"})
-        },
-        onSendMessageKeyPress: () => {
-            dispatch({type: "ADD-NEW-MESSAGE"})
+        onSendMessage: (newMessage: string) => {
+            dispatch({type: "ADD-NEW-MESSAGE", newMessage})
         }
     }
 }
 
 type MapDispatchToPropsType = {
-    onChangeNewMessageBody: (text: string) => void
-    onSendMessage: () => void
-    onSendMessageKeyPress: () => void
+    onSendMessage: (newMessage: string) => void
 }
 
 export const DialogsContainer = compose<React.ComponentType>(

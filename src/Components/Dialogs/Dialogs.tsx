@@ -3,11 +3,12 @@ import s from "./Dialogs.module.css";
 import {DialogItem} from './DialogItem/DialogItem';
 import {Message} from "./Message/Message";
 import {MessagePageType} from "../../redux/state";
+import {reduxForm, Field, InjectedFormProps} from "redux-form";
 
 type DialogsPropsType = {
     dialogsState: MessagePageType
     onChangeNewMessageBody: (text: string) => void
-    onSendMessage: () => void
+    onSendMessage: (newMessage: string) => void
     onSendMessageKeyPress: () => void
     isAuth: boolean
 }
@@ -22,8 +23,8 @@ export function Dialogs(props: DialogsPropsType) {
         let body = e.currentTarget.value;
         props.onChangeNewMessageBody(body)
     }
-    const onSendMessageClick = () => {
-        props.onSendMessage()
+    const onSendMessageClick = (data: MessageFieldDataType) => {
+        props.onSendMessage(data.newMessageBody)
     };
     const onSendMessageKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
         if(e.key === "Enter" || e.ctrlKey){
@@ -38,16 +39,29 @@ export function Dialogs(props: DialogsPropsType) {
             </div>
             <div className={s.messages}>
                 {messagesElements}
-                <div className={s.newMessageArea}>
-                    <textarea className={s.messageArea}
-                              value={props.dialogsState.newMessageBody}
-                              onKeyPress={onSendMessageKeyPress}
-                              onChange={onChangeNewMessageBody}>
-
-                    </textarea>
-                    <button className={s.submitButton} onClick={onSendMessageClick}>Submit</button>
-                </div>
+               <ReduxMessageField onSubmit={onSendMessageClick}/>
             </div>
         </div>
     );
 }
+
+
+type MessageFieldDataType = {
+    newMessageBody: string
+}
+
+
+export const MessageField = (props: InjectedFormProps<MessageFieldDataType>) => {
+    return(
+        <form onSubmit={props.handleSubmit}>
+            <Field className={s.messageArea}
+                   component={"textarea"}
+                   name={"newMessageBody"}
+                   placeholder={"Add new message"}
+            />
+            <button className={s.submitButton}>Submit</button>
+        </form>
+    )
+}
+
+export const ReduxMessageField = reduxForm<MessageFieldDataType>({form: "messageArea"})(MessageField)

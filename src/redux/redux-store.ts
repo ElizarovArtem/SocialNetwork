@@ -1,8 +1,7 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
-import MessageReducer, {AddNewMessageType, ChangeNewMessageBodyType} from "./MessageReducer";
+import MessageReducer, {AddNewMessageType} from "./MessageReducer";
 import ProfileReducer, {
     AddPostActionType,
-    ChangeNewPostTextActionType,
     SetStatusType,
     SetUSerProfileType
 } from "./ProfileReducer";
@@ -38,8 +37,6 @@ window.store = store
 export default store;
 
 export type ActionTypes = AddPostActionType
-    | ChangeNewPostTextActionType
-    | ChangeNewMessageBodyType
     | AddNewMessageType
     | FollowACType
     | UnfollowACType

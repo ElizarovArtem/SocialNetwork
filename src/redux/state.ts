@@ -1,23 +1,12 @@
-import ProfileReducer, {
-    AddPostActionType,
-    ChangeNewPostTextActionType,
+import  {
     PostType,
-    SetUSerProfileType
 } from "./ProfileReducer";
-import MessageReducer, {
-    AddNewMessageType,
-    ChangeNewMessageBodyType,
+import {
     DialogItemType,
     MessageType
 } from "./MessageReducer";
-import SidebarReducer, {FriendsPropsType} from "./SidebarReducer";
-import {
-    ChangeCurrentPageType,
-    ChangeTotalUsersCountType,
-    FollowACType,
-    SetUsersACType, ToggleIsFetchingType,
-    UnfollowACType
-} from "./UsersReducer";
+import  {FriendsPropsType} from "./SidebarReducer";
+
 
 
 export type RootStateType = {

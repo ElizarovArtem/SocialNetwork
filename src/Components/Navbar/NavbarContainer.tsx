@@ -10,6 +10,10 @@ let mapStateToProps = (state: AppStateType) => {
     }
 }
 
-let mapDispatchToProps = () => {}
+let mapDispatchToProps = () => {
+    return {
+
+    }
+}
 
 export const NavbarContainer = connect(mapStateToProps, mapDispatchToProps)(Navbar)

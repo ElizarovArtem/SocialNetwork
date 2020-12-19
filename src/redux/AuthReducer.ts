@@ -1,6 +1,6 @@
 import {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {ActionTypes, AppStateType} from "./redux-store";
-import {authAPI} from "../api/api";
+import {authAPI, LogInSettingsType} from "../api/api";
 
 const SET_USER_DATA = "SET_USER_DATA"
 
@@ -18,9 +18,9 @@ const initialState: InitialStateType = {
 }
 
 export const authReducer = (state: InitialStateType = initialState, action: ActionTypes) => {
-    switch (action.type){
+    switch (action.type) {
         case "SET_USER_DATA":
-            return{
+            return {
                 ...state,
                 ...action.data,
                 isAuth: true
@@ -49,14 +49,25 @@ export const setUserDataAC = (id: number, email: string, login: string): SetUser
     }
 }
 
-export type AuthMeThunkType = ThunkAction<void, AppStateType, {} , ActionTypes>
+export type AuthMeThunkType = ThunkAction<void, AppStateType, {}, ActionTypes>
 export const authMeThunk = (): AuthMeThunkType => {
-    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: ()=> AppStateType) => {
+    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
         authAPI.authMe().then(data => {
-            if(data.resultCode === 0){
+            if (data.resultCode === 0) {
                 let {id, login, email} = data.data
                 dispatch(setUserDataAC(id, email, login))
             }
         })
+    }
+}
+
+export type LogInThunkType = ThunkAction<void, AppStateType, { email: string, password: string, rememberMe: boolean }, ActionTypes>
+export const logInThunk = (email: string, password: string, rememberMe: boolean): LogInThunkType => {
+    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
+
+        authAPI.logIn(email, password, rememberMe)
+            .then(res => {
+                authMeThunk()
+            })
     }
 }
