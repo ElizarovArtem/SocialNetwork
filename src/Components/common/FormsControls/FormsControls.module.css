@@ -6,5 +6,11 @@
 .error span {
     color: red;
     font-size: 1.2rem;
+}
 
+.validationErrorMessage {
+    border: 1px solid red;
+    width: 200px;
+    color: red;
+    padding: 5px;
 }

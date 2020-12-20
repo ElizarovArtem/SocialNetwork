@@ -21,18 +21,9 @@ export function Dialogs(props: DialogsPropsType) {
     let messagesElements = props.dialogsState.messages.map(message => <Message id={message.id} owner={message.owner}
                                                                                message={message.message}/>);
 
-    const onChangeNewMessageBody = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        let body = e.currentTarget.value;
-        props.onChangeNewMessageBody(body)
-    }
     const onSendMessageClick = (data: MessageFieldDataType) => {
         props.onSendMessage(data.newMessageBody)
     };
-    const onSendMessageKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-        if(e.key === "Enter" || e.ctrlKey){
-            props.onSendMessageKeyPress()
-        }
-    }
 
     return (
         <div className={s.dialogs}>

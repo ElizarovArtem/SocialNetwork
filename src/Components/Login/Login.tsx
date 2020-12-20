@@ -5,6 +5,8 @@ import {AppStateType} from "../../redux/redux-store";
 import {logInThunk} from "../../redux/AuthReducer";
 import {Input} from "../common/FormsControls/FormsControls";
 import {maxLengthCreator, required} from "../../utils/validators/validators";
+import {Redirect} from "react-router-dom";
+import s from "./../common/FormsControls/FormsControls.module.css"
 
 
 type FormDataType = {
@@ -13,7 +15,7 @@ type FormDataType = {
     rememberMe: boolean
 }
 
-const maxLength20 = maxLengthCreator(20)
+const maxLength20 = maxLengthCreator(35)
 
 export const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
     return(
@@ -30,6 +32,9 @@ export const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
                 <div>
                     <button>Login</button>
                 </div>
+                {
+                    props.error && <div className={s.validationErrorMessage}>{props.error}</div>
+                }
             </form>
     )
 }
@@ -43,6 +48,8 @@ export const Login = (props: LoginPropsType) => {
         props.logInThunk(formData.login, formData.password, formData.rememberMe)
     }
 
+   if(props.isAuth) return <Redirect to={"/profile"}/>
+
     return(
         <div>
             <h1>LOGIN</h1>
@@ -52,7 +59,7 @@ export const Login = (props: LoginPropsType) => {
 }
 
 type MapStateToPropsType = {
-
+    isAuth: boolean
 }
 type MapDispatchToPropsType = {
     logInThunk: (email: string, password: string, rememberMe: boolean) => void
@@ -60,7 +67,7 @@ type MapDispatchToPropsType = {
 
 const MapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
-
+        isAuth: state.auth.isAuth
     }
 }
 
