@@ -2,15 +2,11 @@ import React from 'react';
 import {Header} from "./Header";
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/redux-store";
-import {authMeThunk, logOutThunk} from "../../redux/AuthReducer";
+import { logOutThunk} from "../../redux/AuthReducer";
 
 
 type HeaderContainerPropsType = MapStateToPropsType & MapDispatchToPropsType
 export class HeaderContainer extends React.Component<HeaderContainerPropsType> {
-
-    componentDidMount() {
-        this.props.authMeThunk()
-    }
 
     render() {
         return <Header isAuth={this.props.isAuth} login={this.props.login} logOutThunk={this.props.logOutThunk}/>
@@ -28,7 +24,6 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     }
 }
 type MapDispatchToPropsType = {
-    authMeThunk: () => void
     logOutThunk: () => void
 }
 export const HeaderBigContainer =
@@ -37,4 +32,4 @@ export const HeaderBigContainer =
         MapDispatchToPropsType,
         {},
         AppStateType
-        >(mapStateToProps, {authMeThunk, logOutThunk})(HeaderContainer)
+        >(mapStateToProps, {logOutThunk})(HeaderContainer)

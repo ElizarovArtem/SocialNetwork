@@ -15,7 +15,8 @@ import UsersReducer, {
 } from "./UsersReducer";
 import {authReducer, SetUserDataType} from "./AuthReducer";
 import thunkMiddleware from "redux-thunk"
-import { reducer as formReducer } from 'redux-form';
+import {reducer as formReducer} from 'redux-form';
+import {AppReducer, SetInitializedType} from "./App-reducer";
 
 
 let reducers = combineReducers({
@@ -24,7 +25,8 @@ let reducers = combineReducers({
     sidebar: SidebarReducer,
     usersPage: UsersReducer,
     auth: authReducer,
-    form: formReducer
+    form: formReducer,
+    app: AppReducer
 })
 
 export type AppStateType = ReturnType<typeof reducers>
@@ -48,3 +50,4 @@ export type ActionTypes = AddPostActionType
     | ToggleFollowingProgressType
     | SetUserDataType
     | SetStatusType
+    | SetInitializedType

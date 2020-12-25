@@ -54,12 +54,13 @@ export const setUserDataAC = (id: number | null, email: string | null, login: st
 export type AuthMeThunkType = ThunkAction<void, AppStateType, {}, ActionTypes>
 export const authMeThunk = (): AuthMeThunkType => {
     return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
-        authAPI.authMe().then(data => {
-            if (data.resultCode === 0) {
-                let {id, login, email} = data.data
-                dispatch(setUserDataAC(id, email, login, true))
-            }
-        })
+         return authAPI.authMe()
+            .then(data => {
+                if (data.resultCode === 0) {
+                    let {id, login, email} = data.data
+                    dispatch(setUserDataAC(id, email, login, true))
+                }
+            })
     }
 }
 
@@ -67,18 +68,17 @@ export type LogInThunkType =
     ThunkAction<void,
         AppStateType,
         { email: string, password: string, rememberMe: boolean },
-        ActionTypes
-        >
-export const logInThunk = (email: string, password: string, rememberMe: boolean) => {
+        ActionTypes>
+export const logInThunk = (email: string, password: string, rememberMe: boolean): LogInThunkType => {
     return (dispatch: ThunkDispatch<AppStateType, {}, any>, getState: () => AppStateType) => {
 
         authAPI.logIn(email, password, rememberMe)
             .then(res => {
-                if(res.data.resultCode === 0) {
+                if (res.data.resultCode === 0) {
                     dispatch(authMeThunk())
                 } else {
                     let message = res.data.messages.length > 0 ? res.data.messages[0] : "Some error"
-                    dispatch(stopSubmit("login",{_error: message}))
+                    dispatch(stopSubmit("login", {_error: message}))
                 }
             })
     }
@@ -86,16 +86,15 @@ export const logInThunk = (email: string, password: string, rememberMe: boolean)
 
 export type LogOutThunkType =
     ThunkAction<void,
-    AppStateType,
-    {},
-    ActionTypes
-    >
+        AppStateType,
+        {},
+        ActionTypes>
 export const logOutThunk = (): LogOutThunkType => {
     return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
 
         authAPI.logOut()
             .then(res => {
-                if(res.data.resultCode === 0) {
+                if (res.data.resultCode === 0) {
                     dispatch(setUserDataAC(null, null, null, false))
                 }
             })

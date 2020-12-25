@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import {
     ProfileType,
     setStatusThunk,
-    setUSerProfileAC,
     setUserProfileThunk,
     updateStatusThunk
 } from "../../redux/ProfileReducer";
@@ -25,7 +24,11 @@ class ProfileContainer extends React.Component<PropsType> {
     componentDidMount() {
         let userId = this.props.match.params.userId
         if (!userId) {
-            userId = "12410"
+            debugger
+            userId = String(this.props.authorizedUserId)
+            if(!userId) {
+                this.props.history.push("/login")
+            }
         }
         this.props.setUserProfileThunk(userId)
         this.props.setStatusThunk(userId)
@@ -45,6 +48,7 @@ class ProfileContainer extends React.Component<PropsType> {
 type MapStateToPropsType = {
     profile: ProfileType | null
     status: string
+    authorizedUserId: number | null
 }
 type MapDispatchToProps = {
     setUserProfileThunk: (userId: string) => void
@@ -54,7 +58,8 @@ type MapDispatchToProps = {
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
         profile: state.profilePage.profile,
-        status: state.profilePage.status
+        status: state.profilePage.status,
+        authorizedUserId: state.auth.id
     }
 }
 export const ProfileBigContainer = compose<React.ComponentType>(
