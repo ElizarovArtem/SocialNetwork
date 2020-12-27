@@ -34,7 +34,8 @@ let initialState: InitialStateType = {
     currentPage: 1,
     isFetching: false,
     toggleFollowingProgress: false,
-    followingUsers: []
+    followingUsers: [],
+    isFake: false
 }
 
 export type InitialStateType = {
@@ -45,44 +46,49 @@ export type InitialStateType = {
     isFetching: boolean
     toggleFollowingProgress: boolean
     followingUsers: number[]
+    isFake: boolean
 }
 
 export const UsersReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
-    switch (action.type){
+    switch (action.type) {
         case FOLLOW:
-           return  {
-               ...state,
-               users: state.users.map(u => {
-                   if(u.id === action.userID){
-                       return { ...u, followed: true }
-                   }
-                   return u;
-               })
-           }
-        case UNFOLLOW:
-            return  {
+            return {
                 ...state,
                 users: state.users.map(u => {
-                    if(u.id === action.userID){
-                        return { ...u, followed: false }
+                    if (u.id === action.userID) {
+                        return {...u, followed: true}
+                    }
+                    return u;
+                })
+            }
+        case UNFOLLOW:
+            return {
+                ...state,
+                users: state.users.map(u => {
+                    if (u.id === action.userID) {
+                        return {...u, followed: false}
                     }
                     return u;
                 })
             }
         case SET_USERS:
-            return {  ...state, users: action.users }
+            return {...state, users: action.users}
         case CHANGE_CURRENT_PAGE:
-            return { ...state, currentPage: action.newPage }
+            return {...state, currentPage: action.newPage}
         case "CHANGE-TOTAL-USERS-COUNT":
-            return { ...state, totalUsersCount: action.newUsersCount}
+            return {...state, totalUsersCount: action.newUsersCount}
         case "TOGGLE-IS-FETCHING":
-            return { ...state, isFetching: action.isFetching }
+            return {...state, isFetching: action.isFetching}
         case "TOGGLE_IS_FOLLOWING_PROGRESS":
-            return { ...state,
+            return {
+                ...state,
                 toggleFollowingProgress: action.isFollowing,
                 followingUsers: action.isFollowing
                     ? [...state.followingUsers, action.uId]
-                    : state.followingUsers.filter(n => n !== action.uId) }
+                    : state.followingUsers.filter(n => n !== action.uId)
+            }
+        case "SOME_FAKE":
+            return {...state, isFake: !state.isFake}
         default:
             return state
     }
@@ -148,11 +154,12 @@ export const toggleFollowingProgressAC = (isFollowing: boolean, uId: number): To
         uId
     }
 };
+export const fakeAC = () => ({type: "SOME_FAKE"} as const)
+export type FakeType = ReturnType<typeof fakeAC>
 
-
-export type GetUsersThunkType = ThunkAction<void, AppStateType, { currentPage: number, pageSize: number } , ActionTypes>
-export const getUsersThunk = (currentPage: number , pageSize: number):GetUsersThunkType => {
-    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: ()=> AppStateType) => {
+export type GetUsersThunkType = ThunkAction<void, AppStateType, { currentPage: number, pageSize: number }, ActionTypes>
+export const getUsersThunk = (currentPage: number, pageSize: number): GetUsersThunkType => {
+    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
         dispatch(toggleIsFetchingAC(true))
         usersAPI.getUsers(currentPage, pageSize).then(data => {
             dispatch(toggleIsFetchingAC(false))
@@ -161,9 +168,9 @@ export const getUsersThunk = (currentPage: number , pageSize: number):GetUsersTh
         })
     }
 }
-export type ChangePageThunkType = ThunkAction<void, AppStateType, { newPage: number, pageSize: number } , ActionTypes>
+export type ChangePageThunkType = ThunkAction<void, AppStateType, { newPage: number, pageSize: number }, ActionTypes>
 export const changePageThunk = (newPage: number, pageSize: number): ChangePageThunkType => {
-    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: ()=> AppStateType) => {
+    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
         dispatch(toggleIsFetchingAC(true))
         dispatch(changeCurrentPageAC(newPage))
         usersAPI.getUsers(newPage, pageSize).then(data => {
@@ -172,24 +179,24 @@ export const changePageThunk = (newPage: number, pageSize: number): ChangePageTh
         })
     }
 }
-export type UnfollowThunkType = ThunkAction<void, AppStateType, { id: number } , ActionTypes>
+export type UnfollowThunkType = ThunkAction<void, AppStateType, { id: number }, ActionTypes>
 export const unfollowThunk = (id: number): UnfollowThunkType => {
-    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: ()=> AppStateType) => {
+    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
         dispatch(toggleFollowingProgressAC(true, id))
         usersAPI.unfollow(id).then(data => {
-            if (data.resultCode == 0) {
+            if (data.resultCode === 0) {
                 dispatch(unfollowAC(id))
             }
             dispatch(toggleFollowingProgressAC(false, id))
         })
     }
 }
-export type FollowThunkType = ThunkAction<void, AppStateType, { id: number } , ActionTypes>
+export type FollowThunkType = ThunkAction<void, AppStateType, { id: number }, ActionTypes>
 export const followThunk = (id: number): FollowThunkType => {
-    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: ()=> AppStateType) => {
+    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
         dispatch(toggleFollowingProgressAC(true, id))
         usersAPI.follow(id).then(data => {
-            if (data.resultCode == 0) {
+            if (data.resultCode === 0) {
                 dispatch(followAC(id))
             }
             dispatch(toggleFollowingProgressAC(false, id))

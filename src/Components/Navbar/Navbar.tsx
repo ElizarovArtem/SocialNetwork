@@ -10,7 +10,8 @@ type NavbarPropsType ={
 
 export function Navbar(props: NavbarPropsType) {
 
-    let friendItem = props.sidebarState.friends.map(friend => <Friend name={friend.name}/>)
+    let friendItem = props.sidebarState.friends
+        .map((friend,index) => <Friend name={friend.name} key={index}/>)
 
     return (
         <div className={s.nav}>

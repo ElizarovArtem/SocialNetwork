@@ -36,7 +36,7 @@ export function Users(props: UsersPropsType) {
             </div>
             {props.users.map(u => {
                 return (
-                    <div>
+                    <div key={u.id}>
                         <div>
                             <div>
                                 <NavLink to={'/profile/' + u.id}>

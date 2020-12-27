@@ -1,11 +1,14 @@
 import React from 'react';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import store, {AppStateType} from "./redux/redux-store";
+import store from "./redux/redux-store";
 import ReactDOM from 'react-dom';
 import {ConnectedApp} from './App';
 import {BrowserRouter} from "react-router-dom";
 import { Provider } from 'react-redux';
+import {fakeAC} from "./redux/UsersReducer";
+
+//setInterval(() => store.dispatch(fakeAC()), 1000)
 
     ReactDOM.render(
         <BrowserRouter>

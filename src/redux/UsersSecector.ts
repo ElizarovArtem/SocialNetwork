@@ -1,8 +1,15 @@
 import {AppStateType} from "./redux-store";
+import {createSelector} from "reselect";
 
 export const selectUsers = (state: AppStateType) => {
     return state.usersPage.users
 }
+export const getUsersSelector = createSelector(selectUsers, (users) => {
+    console.log("SELECTOR")
+    return users.map(u => u)
+})
+
+
 export const selectCurrentPage = (state: AppStateType) => {
     return state.usersPage.currentPage
 }
