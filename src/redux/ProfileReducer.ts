@@ -122,7 +122,6 @@ export const updateStatusThunk = (status: string): UpdateStatusThunkType => {
     return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: ()=> AppStateType) => {
         profileAPI.updateStatus(status)
             .then(data => {
-                debugger
                 if(data.data.resultCode === 0) {
                     dispatch(setStatusAC(status))
                 }
