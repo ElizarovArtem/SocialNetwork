@@ -1,34 +1,43 @@
 import React from 'react';
 import s from "./MyPosts.module.css";
 import {Post} from "./Post/Post";
-import {InitialStateType} from "../../../redux/ProfileReducer";
+import {PostType} from "../../../redux/ProfileReducer";
 import {reduxForm, Field, InjectedFormProps} from "redux-form";
 import {maxLengthCreator, required} from "../../../utils/validators/validators";
 import {Textarea} from "../../common/FormsControls/FormsControls";
 
 
 type MyPostsPropsType ={
-    myPostsState: InitialStateType
+    posts: Array<PostType>
     addPost: (newPostText: string) => void
 }
 
-export function MyPosts(props: MyPostsPropsType) {
+export class MyPosts extends React.Component<MyPostsPropsType> {
 
-    let onAddPost = (data: NewPostDataType) => {
-            props.addPost(data.mewPostText);
-    };
 
-    let postElements = props.myPostsState.posts.map(post => <Post id={post.id} message={post.message} likesCount={post.likesCount}/>)
+    shouldComponentUpdate(nextProps: Readonly<MyPostsPropsType>, nextState: Readonly<{}>): boolean {
+        return nextProps != this.props || nextState != this.state
+    }
 
-    return (
-        <div className={s.postsBlock}>
-            <h3>MY POSTS</h3>
-           <ReduxPostField onSubmit={onAddPost} />
-            <div className={s.posts}>
-                {postElements}
+    render() {
+
+        let onAddPost = (data: NewPostDataType) => {
+            this.props.addPost(data.mewPostText);
+        };
+
+        let postElements = this.props.posts
+            .map(post => <Post id={post.id} message={post.message} likesCount={post.likesCount}/>)
+
+        return (
+            <div className={s.postsBlock}>
+                <h3>MY POSTS</h3>
+                <ReduxPostField onSubmit={onAddPost}/>
+                <div className={s.posts}>
+                    {postElements}
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
 }
 
 type NewPostDataType = {
