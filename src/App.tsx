@@ -11,7 +11,7 @@ import {connect} from "react-redux";
 import {AppStateType} from "./redux/redux-store";
 import {compose} from "redux";
 import {withRouter} from "react-router-dom";
-import {initializedThunk} from "./redux/App-reducer";
+import {initializedThunk} from "./redux/AppReducer";
 import {Preloader} from "./Components/common/Preloader/Preloader";
 
 

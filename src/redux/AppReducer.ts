@@ -6,14 +6,14 @@ import {authMeThunk} from "./AuthReducer";
 
 const INITIALIZED_SUCCESS = "INITIALIZED_SUCCESS"
 
-type InitialStateType = {
+export type InitialStateType = {
     initialized: boolean
 }
 const initialState: InitialStateType = {
     initialized: false
 }
 
-export const AppReducer = (state: InitialStateType = initialState, action: ActionTypes) => {
+export const appReducer = (state: InitialStateType = initialState, action: ActionTypes) => {
     switch (action.type) {
         case "INITIALIZED_SUCCESS":
             return {
@@ -28,7 +28,7 @@ export const AppReducer = (state: InitialStateType = initialState, action: Actio
 export type SetInitializedType = {
     type: "INITIALIZED_SUCCESS"
 }
-export const setUserDataAC = (): SetInitializedType => {
+export const setAppInitializedAC = (): SetInitializedType => {
     return {type: INITIALIZED_SUCCESS }
 }
 
@@ -37,7 +37,7 @@ export const initializedThunk = () => {
     return (dispatch: ThunkDispatch<AppStateType, unknown, any>, getState: () => AppStateType) => {
         let promise = dispatch(authMeThunk())
         Promise.all([promise]).then(() => {
-            dispatch(setUserDataAC())
+            dispatch(setAppInitializedAC())
         })
     }
 }

@@ -91,7 +91,7 @@ export type SetUSerProfileType = {
     type: "SET-USER-PROFILE"
     profile: ProfileType
 }
-export const setUSerProfileAC = (profile: ProfileType): SetUSerProfileType => {
+export const setUserProfileAC = (profile: ProfileType): SetUSerProfileType => {
     return {
         type: SET_USER_PROFILE,
         profile
@@ -103,7 +103,7 @@ export const setUserProfileThunk = (userId: string): SetUserProfileThunkType => 
     return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: ()=> AppStateType) => {
         usersAPI.openUserProfile(userId)
             .then(data => {
-                dispatch(setUSerProfileAC(data.data))
+                dispatch(setUserProfileAC(data.data))
             })
     }
 }
