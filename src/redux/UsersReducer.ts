@@ -1,6 +1,8 @@
 import {ActionTypes, AppStateType} from "./redux-store";
 import {usersAPI} from "../api/api";
 import {ThunkAction, ThunkDispatch} from "redux-thunk";
+import {Dispatch} from "redux";
+import {changeObjectInArray} from "../utils/helpers";
 
 export type UserType = {
     id: number
@@ -54,22 +56,12 @@ export const UsersReducer = (state: InitialStateType = initialState, action: Act
         case FOLLOW:
             return {
                 ...state,
-                users: state.users.map(u => {
-                    if (u.id === action.userID) {
-                        return {...u, followed: true}
-                    }
-                    return u;
-                })
+                users: changeObjectInArray(state.users, action.userID, {followed: true})
             }
         case UNFOLLOW:
             return {
                 ...state,
-                users: state.users.map(u => {
-                    if (u.id === action.userID) {
-                        return {...u, followed: false}
-                    }
-                    return u;
-                })
+                users: changeObjectInArray(state.users, action.userID, {followed: false})
             }
         case SET_USERS:
             return {...state, users: action.users}
@@ -179,28 +171,30 @@ export const changePageThunk = (newPage: number, pageSize: number): ChangePageTh
         })
     }
 }
+
+const followUnfollowFlow = async (dispatch: Dispatch,
+                                  id: number,
+                                  APIMethod: (id: number) => any,
+                                  actionCreator: (id: number) => FollowACType | UnfollowACType ) => {
+
+    dispatch(toggleFollowingProgressAC(true, id))
+    const data = await APIMethod(id)
+    if (data.resultCode === 0) {
+        dispatch(actionCreator(id))
+    }
+    dispatch(toggleFollowingProgressAC(false, id))
+}
+
 export type UnfollowThunkType = ThunkAction<void, AppStateType, { id: number }, ActionTypes>
 export const unfollowThunk = (id: number): UnfollowThunkType => {
-    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
-        dispatch(toggleFollowingProgressAC(true, id))
-        usersAPI.unfollow(id).then(data => {
-            if (data.resultCode === 0) {
-                dispatch(unfollowAC(id))
-            }
-            dispatch(toggleFollowingProgressAC(false, id))
-        })
+    return async (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>) => {
+        await followUnfollowFlow(dispatch, id, usersAPI.unfollow, unfollowAC)
     }
 }
 export type FollowThunkType = ThunkAction<void, AppStateType, { id: number }, ActionTypes>
 export const followThunk = (id: number): FollowThunkType => {
-    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
-        dispatch(toggleFollowingProgressAC(true, id))
-        usersAPI.follow(id).then(data => {
-            if (data.resultCode === 0) {
-                dispatch(followAC(id))
-            }
-            dispatch(toggleFollowingProgressAC(false, id))
-        })
+    return async (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>) => {
+        await followUnfollowFlow(dispatch, id, usersAPI.follow, followAC)
     }
 }
 

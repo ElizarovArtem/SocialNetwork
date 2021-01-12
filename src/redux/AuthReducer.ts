@@ -42,25 +42,19 @@ export type SetUserDataType = {
 export const setUserDataAC = (id: number | null, email: string | null, login: string | null, isAuth: boolean): SetUserDataType => {
     return {
         type: SET_USER_DATA,
-        payload: {
-            id,
-            email,
-            login,
-            isAuth
-        }
+        payload: { id, email, login, isAuth}
     }
 }
 
 export type AuthMeThunkType = ThunkAction<void, AppStateType, {}, ActionTypes>
 export const authMeThunk = (): AuthMeThunkType => {
-    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
-         return authAPI.authMe()
-            .then(data => {
+    return async (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
+          const data = await authAPI.authMe()
                 if (data.resultCode === 0) {
                     let {id, login, email} = data.data
                     dispatch(setUserDataAC(id, email, login, true))
                 }
-            })
+          return data
     }
 }
 

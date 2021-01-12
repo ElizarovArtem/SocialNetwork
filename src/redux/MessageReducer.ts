@@ -38,10 +38,9 @@ const MessageReducer = (state: InitialStateType = initialState, action: ActionTy
     switch (action.type) {
         case ADD_NEW_MESSAGE: {
             if (action.newMessage !== ''){
-                let newMessage: MessageType = {id: 6, message: action.newMessage, owner: "first"};
                 return {
                     ...state,
-                    messages: [...state.messages, newMessage]
+                    messages: [...state.messages, {id: 6, message: action.newMessage, owner: "first"}]
                 }
             }
             return state

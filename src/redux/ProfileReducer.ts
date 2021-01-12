@@ -33,7 +33,7 @@ export type ProfileType = {
     aboutMe: string
     userId: number
     lookingForAJob: boolean
-    lookingForAJobDescription:string
+    lookingForAJobDescription: string
     fullName: string
     contacts: {
         github: string
@@ -61,8 +61,8 @@ export const ProfileReducer = (state: InitialStateType = initialState, action: A
         case "SET-USER-PROFILE": {
             return {...state, profile: action.profile}
         }
-        case "SET_STATUS":{
-            return { ...state, status: action.status}
+        case "SET_STATUS": {
+            return {...state, status: action.status}
         }
         default:
             return state;
@@ -74,7 +74,7 @@ export type SetStatusType = {
     status: string
 }
 export const setStatusAC = (status: string): SetStatusType => {
-    return{
+    return {
         type: SET_STATUS,
         status
     }
@@ -98,34 +98,28 @@ export const setUserProfileAC = (profile: ProfileType): SetUSerProfileType => {
     }
 };
 
-export type SetUserProfileThunkType = ThunkAction<void, AppStateType, { userId: string } , ActionTypes>
+export type SetUserProfileThunkType = ThunkAction<void, AppStateType, { userId: string }, ActionTypes>
 export const setUserProfileThunk = (userId: string): SetUserProfileThunkType => {
-    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: ()=> AppStateType) => {
-        usersAPI.openUserProfile(userId)
-            .then(data => {
-                dispatch(setUserProfileAC(data.data))
-            })
+    return async (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
+        const data = await usersAPI.openUserProfile(userId)
+        dispatch(setUserProfileAC(data.data))
     }
 }
 
-export type SetStatusThunkType = ThunkAction<void, AppStateType, { userId: string } , ActionTypes>
+export type SetStatusThunkType = ThunkAction<void, AppStateType, { userId: string }, ActionTypes>
 export const setStatusThunk = (userId: string): SetStatusThunkType => {
-    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: ()=> AppStateType) => {
-        profileAPI.getStatus(userId)
-            .then(data => {
-                dispatch(setStatusAC(data.data))
-            })
+    return async (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
+        const data = await profileAPI.getStatus(userId)
+        dispatch(setStatusAC(data.data))
     }
 }
-export type UpdateStatusThunkType = ThunkAction<void, AppStateType, { status: string } , ActionTypes>
+export type UpdateStatusThunkType = ThunkAction<void, AppStateType, { status: string }, ActionTypes>
 export const updateStatusThunk = (status: string): UpdateStatusThunkType => {
-    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: ()=> AppStateType) => {
-        profileAPI.updateStatus(status)
-            .then(data => {
-                if(data.data.resultCode === 0) {
-                    dispatch(setStatusAC(status))
-                }
-            })
+    return async (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
+        const data = await profileAPI.updateStatus(status)
+        if (data.data.resultCode === 0) {
+            dispatch(setStatusAC(status))
+        }
     }
 }
 
