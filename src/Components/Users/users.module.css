@@ -2,28 +2,24 @@
     width: 100px;
     height: 100px;
 }
-.selectedPage {
-    color: gold;
-    font-weight: bold;
-    font-size: 18px;
-    padding: 5px;
-    cursor: pointer;
-    background-color: #333333;
-    border-radius: 30px;
-    display: inline-block;
-}
-.page {
-    font-size: 18px;
-    padding: 5px;
-    cursor: pointer;
-    display: inline-block;
-}
-.pages {
-    padding: 15px;
-}
 .preloader {
     display: block;
     width: 50%;
     margin: 0 auto;
     height: 200px;
+}
+.usersList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+    padding: 15px;
+}
+.picAndButton, .mainInfo {
+    text-align: center;
+}
+.user {
+    padding: 10px;
+    background-color: rgba(255,255,255,0.7);
+    box-shadow: 0 0 20px rgba(0,0,0,.09);
 }

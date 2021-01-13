@@ -54,7 +54,7 @@ export const authMeThunk = (): AuthMeThunkType => {
                     let {id, login, email} = data.data
                     dispatch(setUserDataAC(id, email, login, true))
                 }
-          return data
+
     }
 }
 
