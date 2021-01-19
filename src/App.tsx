@@ -1,14 +1,14 @@
 import React from 'react';
 import './App.css';
-import {Route} from "react-router-dom";
+import {BrowserRouter, Route} from "react-router-dom";
 import {DialogsContainer} from "./Components/Dialogs/DialogsContainer";
 import {NavbarContainer} from "./Components/Navbar/NavbarContainer";
 import {UserBigContainer} from "./Components/Users/UsersContainer";
 import {ProfileBigContainer} from "./Components/Profile/ProfileContainer";
 import {HeaderBigContainer} from "./Components/Header/HeaderContainer";
 import {LoginContainer} from "./Components/Login/Login";
-import {connect} from "react-redux";
-import {AppStateType} from "./redux/redux-store";
+import {connect, Provider} from "react-redux";
+import store, {AppStateType} from "./redux/redux-store";
 import {compose} from "redux";
 import {withRouter} from "react-router-dom";
 import {initializedThunk} from "./redux/AppReducer";
@@ -63,3 +63,14 @@ export const ConnectedApp = compose<React.ComponentType>(
         MapDispatchToPropsType,
         {},
         AppStateType>(MapStateToProps, {initializedThunk}))(App);
+
+
+export const SamuraiJSApp = () => {
+    return (
+        <BrowserRouter>
+            <Provider store={store} >
+                <ConnectedApp />
+            </Provider>
+        </BrowserRouter>
+    )
+}

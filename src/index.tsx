@@ -1,21 +1,13 @@
 import React from 'react';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import store from "./redux/redux-store";
 import ReactDOM from 'react-dom';
-import {ConnectedApp} from './App';
-import {BrowserRouter} from "react-router-dom";
-import { Provider } from 'react-redux';
-import {fakeAC} from "./redux/UsersReducer";
+import {ConnectedApp, SamuraiJSApp} from './App';
 
 //setInterval(() => store.dispatch(fakeAC()), 1000)
 
     ReactDOM.render(
-        <BrowserRouter>
-            <Provider store={store} >
-            <ConnectedApp />
-            </Provider>
-        </BrowserRouter>,
+       <SamuraiJSApp/>,
         document.getElementById('root')
     );
 
