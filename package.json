@@ -56,6 +56,8 @@
     "@storybook/node-logger": "^6.0.26",
     "@storybook/preset-create-react-app": "^3.1.4",
     "@storybook/react": "^6.0.26",
-    "react-is": "^16.13.1"
+    "@types/react-test-renderer": "^16.9.4",
+    "react-is": "^16.13.1",
+    "react-test-renderer": "16.13.1"
   }
 }
