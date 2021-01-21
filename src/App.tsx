@@ -1,10 +1,10 @@
 import React from 'react';
 import './App.css';
 import {BrowserRouter, Route} from "react-router-dom";
-import {DialogsContainer} from "./Components/Dialogs/DialogsContainer";
+//import {DialogsContainer} from "./Components/Dialogs/DialogsContainer";
 import {NavbarContainer} from "./Components/Navbar/NavbarContainer";
 import {UserBigContainer} from "./Components/Users/UsersContainer";
-import {ProfileBigContainer} from "./Components/Profile/ProfileContainer";
+//import {ProfileBigContainer} from "./Components/Profile/ProfileContainer";
 import {HeaderBigContainer} from "./Components/Header/HeaderContainer";
 import {LoginContainer} from "./Components/Login/Login";
 import {connect, Provider} from "react-redux";
@@ -13,7 +13,13 @@ import {compose} from "redux";
 import {withRouter} from "react-router-dom";
 import {initializedThunk} from "./redux/AppReducer";
 import {Preloader} from "./Components/common/Preloader/Preloader";
+import {WithSuspense} from "./hoc/WithSuspense";
 
+const DialogsContainer = React.lazy(() => import("./Components/Dialogs/DialogsContainer"))
+const ProfileBigContainer = React.lazy(() =>
+        import('./Components/Profile/ProfileContainer')
+            .then(({ ProfileBigContainer }) => ({ default: ProfileBigContainer })),
+);
 
 type AppPropsType = MapStateToPropsType & MapDispatchToPropsType
 
@@ -31,9 +37,9 @@ class App extends React.Component<AppPropsType> {
                 <HeaderBigContainer/>
                 <NavbarContainer/>
                 <div className="app-wrapper-content">
-                    <Route render={() => <ProfileBigContainer/>}
+                    <Route render={WithSuspense(ProfileBigContainer)}
                            path="/profile/:userId?"/>
-                    <Route render={() => <DialogsContainer/>}
+                    <Route render={WithSuspense(DialogsContainer)}
                            path="/dialogs"/>
                     <Route render={() => <UserBigContainer/>}
                            path={"/users"}/>
@@ -62,7 +68,7 @@ export const ConnectedApp = compose<React.ComponentType>(
     connect<MapStateToPropsType,
         MapDispatchToPropsType,
         {},
-        AppStateType>(MapStateToProps, {initializedThunk}))(App);
+        AppStateType>(MapStateToProps, {initializedThunk}))(App) ;
 
 
 export const SamuraiJSApp = () => {

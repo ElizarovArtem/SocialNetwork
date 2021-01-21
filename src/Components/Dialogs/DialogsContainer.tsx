@@ -31,10 +31,12 @@ type MapDispatchToPropsType = {
     onSendMessage: (newMessage: string) => void
 }
 
-export const DialogsContainer = compose<React.ComponentType>(
+const DialogsContainer = compose<React.ComponentType>(
     connect<MapStateToPropsType,
         MapDispatchToPropsType,
         {},
         AppStateType>(mapStateToProps, mapDispatchToProps),
     WithAuthRedirect
 )(Dialogs)
+
+export default DialogsContainer
