@@ -1,5 +1,6 @@
 import React from 'react';
 import s from "./../Dialogs.module.css";
+import userAva from './../../../assets/images/userAvajpg.jpg'
 
 export type MessagePropsType = {
     id: number
@@ -10,7 +11,7 @@ export type MessagePropsType = {
 export function Message(props: MessagePropsType) {
     return props.owner === "first" ?
         <div className={s.messageItem1}>
-            <img src="https://www.perunica.ru/uploads/posts/2019-03/1552932077_1.jpg"/>
+            <img src={userAva}/>
             <div className={s.message}>
                 {props.message}
             </div>
@@ -20,6 +21,6 @@ export function Message(props: MessagePropsType) {
             <div className={s.message}>
                 {props.message}
             </div>
-            <img src="https://www.perunica.ru/uploads/posts/2019-03/1552932077_1.jpg"/>
+            <img src={userAva}/>
         </div>
 }

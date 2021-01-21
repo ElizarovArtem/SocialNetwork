@@ -1,5 +1,5 @@
 import React from "react";
-import {create} from "react-test-renderer";
+import {create, ReactTestInstance} from "react-test-renderer";
 import {Status} from "./Status";
 
 describe("Status component", () => {
@@ -36,10 +36,8 @@ describe("Status component", () => {
         expect(input.props.value).toBe("MaBoyyy");
     });
     test(" <input> shouldn't be defined", () => {
-        const component = create(<Status status={"MaBoyyy"} updateStatusThunk={() => {
-        }}/>);
+        const component = create(<Status status={"MaBoyyy"} updateStatusThunk={() => {}}/>);
         const instance = component.root;
-
         expect(() => {
             const input = instance.findByType('input')
         }).toThrow();
@@ -47,8 +45,7 @@ describe("Status component", () => {
     test("Status's callback should be called", () => {
         const mockCallback = jest.fn()
         const component = create(<Status status={"MaBoyyy"} updateStatusThunk={mockCallback}/>);
-        const instance = component.getInstance()
-        //@ts-ignore
+        const instance = component.getInstance() as ReactTestInstance & {activateViewMode: () => void}
         instance.activateViewMode()
         expect(mockCallback.mock.calls.length).toBe(1)
     });

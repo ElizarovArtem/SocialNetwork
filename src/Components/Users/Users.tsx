@@ -25,6 +25,7 @@ export function Users(props: UsersPropsType) {
             <Paginator totalUsersCount={props.totalUsersCount}
                        pageSize={props.pageSize}
                        onPageChange={props.onPageChange}
+                       portionSize={10}
                        currentPage={props.currentPage}
             />
             <div className={s.usersList}>
