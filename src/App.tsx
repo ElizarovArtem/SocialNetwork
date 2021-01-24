@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {BrowserRouter, Route} from "react-router-dom";
+import {BrowserRouter, HashRouter, Route} from "react-router-dom";
 //import {DialogsContainer} from "./Components/Dialogs/DialogsContainer";
 import {NavbarContainer} from "./Components/Navbar/NavbarContainer";
 import {UserBigContainer} from "./Components/Users/UsersContainer";
@@ -73,10 +73,10 @@ export const ConnectedApp = compose<React.ComponentType>(
 
 export const SamuraiJSApp = () => {
     return (
-        <BrowserRouter>
+        <HashRouter>
             <Provider store={store} >
                 <ConnectedApp />
             </Provider>
-        </BrowserRouter>
+        </HashRouter>
     )
 }

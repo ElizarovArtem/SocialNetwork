@@ -2,7 +2,7 @@ import {applyMiddleware, combineReducers, createStore} from "redux";
 import MessageReducer, {AddNewMessageType} from "./MessageReducer";
 import ProfileReducer, {
     AddPostActionType,
-    SetStatusType,
+    SetStatusType, SetUserPhotoType,
     SetUSerProfileType
 } from "./ProfileReducer";
 import SidebarReducer from "./SidebarReducer";
@@ -51,4 +51,5 @@ export type ActionTypes = AddPostActionType
     | SetUserDataType
     | SetStatusType
     | SetInitializedType
-|FakeType
+    | FakeType
+    | SetUserPhotoType

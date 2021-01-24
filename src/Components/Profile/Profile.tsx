@@ -7,12 +7,20 @@ type ProfilePropsType = {
     profile: ProfileType | null
     status: string
     updateStatusThunk: (status: string) => void
+    isOwner: boolean
+    updatePhotoThunk: (photoFile: File ) => void
 }
 
 export function Profile(props: ProfilePropsType) {
     return (
         <div>
-            <ProfileInfo profile={props.profile} status={props.status} updateStatusThunk={props.updateStatusThunk}/>
+            <ProfileInfo
+                updatePhotoThunk={props.updatePhotoThunk}
+                isOwner={props.isOwner}
+                profile={props.profile}
+                status={props.status}
+                updateStatusThunk={props.updateStatusThunk}
+            />
             <MyPostsContainer/>
         </div>
     );

@@ -7,6 +7,7 @@ export type AddPostActionType = ReturnType<typeof AddPostActionCreator>
 const ADD_POST = "ADD-POST"
 const SET_USER_PROFILE = "SET-USER-PROFILE"
 const SET_STATUS = "SET_STATUS"
+const SET_USER_PHOTO = "SET-USER-PHOTO"
 
 let initialState: InitialStateType = {
     posts: [
@@ -64,6 +65,9 @@ export const ProfileReducer = (state: InitialStateType = initialState, action: A
         case "SET_STATUS": {
             return {...state, status: action.status}
         }
+        case "SET-USER-PHOTO": {
+            return {...state, profile: {...state.profile, photos: {...action.photoFile}} as ProfileType }
+        }
         default:
             return state;
     }
@@ -97,6 +101,18 @@ export const setUserProfileAC = (profile: ProfileType): SetUSerProfileType => {
         profile
     }
 };
+export type SetUserPhotoType = {
+    type: "SET-USER-PHOTO"
+    photoFile: {
+        small: string, large: string
+    }
+}
+export const setUserPhotoAC = (photoFile: {small: string, large: string}): SetUserPhotoType => {
+    return {
+        type: SET_USER_PHOTO,
+        photoFile
+    }
+};
 
 export type SetUserProfileThunkType = ThunkAction<void, AppStateType, { userId: string }, ActionTypes>
 export const setUserProfileThunk = (userId: string): SetUserProfileThunkType => {
@@ -119,6 +135,16 @@ export const updateStatusThunk = (status: string): UpdateStatusThunkType => {
         const data = await profileAPI.updateStatus(status)
         if (data.data.resultCode === 0) {
             dispatch(setStatusAC(status))
+        }
+    }
+}
+export type UpdatePhotoThunkType = ThunkAction<void, AppStateType, { photoFile: string }, ActionTypes>
+export const updatePhotoThunk = (photoFile: File ): UpdatePhotoThunkType => {
+    return async (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
+
+        const res = await profileAPI.updatePhoto(photoFile)
+        if (res.data.resultCode === 0) {
+            dispatch(setUserPhotoAC(res.data.data.photos))
         }
     }
 }

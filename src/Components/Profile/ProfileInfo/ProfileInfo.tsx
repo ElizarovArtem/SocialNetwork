@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 import s from "./ProfileInfo.module.css";
 import {ProfileType} from "../../../redux/ProfileReducer";
 import {Preloader} from "../../common/Preloader/Preloader";
@@ -7,9 +7,11 @@ import userPhoto from '../../../assets/images/user-profile.png'
 import {StatusWithUseState} from "./Status/StatusWithUseState";
 
 type ProfileInfoPropsType = {
+    updatePhotoThunk: (photoFile: File ) => void
     profile: ProfileType | null
     status: string
     updateStatusThunk: (status: string) => void
+    isOwner: boolean
 }
 export function ProfileInfo(props: ProfileInfoPropsType) {
     if(!props.profile){
@@ -17,6 +19,14 @@ export function ProfileInfo(props: ProfileInfoPropsType) {
     }
 
     let keys = Object.keys(props.profile.contacts)
+
+    const onSendPhoto = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target && e.target.files && e.target.files[0]
+        if(file !== null) {
+            props.updatePhotoThunk(file)
+        }
+    }
+
 
     return (
         <div className={s.content}>
@@ -27,7 +37,8 @@ export function ProfileInfo(props: ProfileInfoPropsType) {
             </div>
             <div className={s.descriptionBlock}>
                 <div>
-                    <img src={props.profile.photos.large ? props.profile.photos.large : userPhoto }/>
+                    <img src={props.profile.photos.large || userPhoto }/>
+                    {props.isOwner && <input type="file" onChange={onSendPhoto}/>}
                 </div>
                 <div>Name: {props.profile.fullName}</div>
                 <StatusWithUseState status={props.status} updateStatusThunk={props.updateStatusThunk}/>
