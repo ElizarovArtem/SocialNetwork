@@ -13,7 +13,7 @@ import UsersReducer, {
     SetUsersACType, ToggleFollowingProgressType, ToggleIsFetchingType,
     UnfollowACType
 } from "./UsersReducer";
-import {authReducer, SetUserDataType} from "./AuthReducer";
+import {authReducer, SetCaptchaUrlType, SetUserDataType} from "./AuthReducer";
 import thunkMiddleware from "redux-thunk"
 import {reducer as formReducer} from 'redux-form';
 import {appReducer, SetInitializedType} from "./AppReducer";
@@ -54,3 +54,4 @@ export type ActionTypes = AddPostActionType
     | FakeType
     | SetUserPhotoType
     | UpdateProfileType
+    | SetCaptchaUrlType
