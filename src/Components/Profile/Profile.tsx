@@ -2,6 +2,7 @@ import React from 'react';
 import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
 import {MyPostsContainer} from "./My posts/MyPostsContainer";
 import {ProfileType} from "../../redux/ProfileReducer";
+import {FormDataType} from "./ProfileInfo/ProfileDataForm";
 
 type ProfilePropsType = {
     profile: ProfileType | null
@@ -9,6 +10,7 @@ type ProfilePropsType = {
     updateStatusThunk: (status: string) => void
     isOwner: boolean
     updatePhotoThunk: (photoFile: File ) => void
+    updateProfileThunk: (profileData: FormDataType) => void
 }
 
 export function Profile(props: ProfilePropsType) {
@@ -16,6 +18,7 @@ export function Profile(props: ProfilePropsType) {
         <div>
             <ProfileInfo
                 updatePhotoThunk={props.updatePhotoThunk}
+                updateProfileThunk={props.updateProfileThunk}
                 isOwner={props.isOwner}
                 profile={props.profile}
                 status={props.status}

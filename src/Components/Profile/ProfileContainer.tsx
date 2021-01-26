@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {
     ProfileType,
     setStatusThunk,
-    setUserProfileThunk, updatePhotoThunk,
+    setUserProfileThunk, updatePhotoThunk, updateProfileThunk,
     updateStatusThunk
 } from "../../redux/ProfileReducer";
 import {AppStateType} from "../../redux/redux-store";
@@ -12,6 +12,7 @@ import {withRouter} from "react-router-dom";
 import {RouteComponentProps} from "react-router";
 import {WithAuthRedirect} from "../../hoc/WithAuthRedirect";
 import {compose} from "redux";
+import {FormDataType} from "./ProfileInfo/ProfileDataForm";
 
 
 type ProfileContainerPropsType = MapStateToPropsType & MapDispatchToProps
@@ -26,7 +27,7 @@ class ProfileContainer extends React.Component<PropsType> {
         let userId = this.props.match.params.userId
         if (!userId) {
             userId = String(this.props.authorizedUserId)
-            if(!userId) {
+            if (!userId) {
                 this.props.history.push("/login")
             }
         }
@@ -35,7 +36,7 @@ class ProfileContainer extends React.Component<PropsType> {
     }
 
     componentDidUpdate(prevProps: Readonly<PropsType>, prevState: Readonly<{}>, snapshot?: any) {
-        if(this.props.match.params.userId !== prevProps.match.params.userId) {
+        if (this.props.match.params.userId !== prevProps.match.params.userId) {
             this.openCorrectUserProfile()
         }
     }
@@ -48,6 +49,7 @@ class ProfileContainer extends React.Component<PropsType> {
         return (
             <Profile
                 isOwner={!this.props.match.params.userId}
+                updateProfileThunk={this.props.updateProfileThunk}
                 profile={this.props.profile}
                 status={this.props.status}
                 updateStatusThunk={this.props.updateStatusThunk}
@@ -67,6 +69,7 @@ type MapDispatchToProps = {
     setStatusThunk: (userId: string) => void
     updateStatusThunk: (status: string) => void
     updatePhotoThunk: (photoFile: File) => void
+    updateProfileThunk: (profileData: FormDataType) => void
 }
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
@@ -77,7 +80,14 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
 }
 export const ProfileBigContainer = compose<React.ComponentType>(
     connect<MapStateToPropsType, MapDispatchToProps, {}, AppStateType>
-    (mapStateToProps, {setUserProfileThunk, setStatusThunk, updateStatusThunk, updatePhotoThunk}),
+    (mapStateToProps,
+        {
+            updateProfileThunk,
+            setUserProfileThunk,
+            setStatusThunk,
+            updateStatusThunk,
+            updatePhotoThunk
+        }),
     withRouter,
     WithAuthRedirect
 )(ProfileContainer)

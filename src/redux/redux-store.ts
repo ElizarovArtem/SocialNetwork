@@ -3,7 +3,7 @@ import MessageReducer, {AddNewMessageType} from "./MessageReducer";
 import ProfileReducer, {
     AddPostActionType,
     SetStatusType, SetUserPhotoType,
-    SetUSerProfileType
+    SetUSerProfileType, UpdateProfileType
 } from "./ProfileReducer";
 import SidebarReducer from "./SidebarReducer";
 import UsersReducer, {
@@ -53,3 +53,4 @@ export type ActionTypes = AddPostActionType
     | SetInitializedType
     | FakeType
     | SetUserPhotoType
+    | UpdateProfileType
