@@ -20,8 +20,7 @@ let initialState: InitialStateType = {
         {id: 2, message: "Go alone", likesCount: 12},
     ],
     profile: null,
-    status: "",
-    error: null
+    status: ""
 }
 
 export type PostType = {
@@ -34,7 +33,6 @@ export type InitialStateType = {
     posts: Array<PostType>
     profile: null | ProfileType
     status: string
-    error: null | string
 }
 export type ProfileType = {
     aboutMe: string
@@ -83,8 +81,6 @@ export const ProfileReducer = (state: InitialStateType = initialState, action: A
                     contacts: {...action.profileData.contacts}
                 }
             }
-        case "SET-ERROR":
-            return  {...state, error: action.error}
         default:
             return state;
     }
