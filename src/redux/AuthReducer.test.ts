@@ -6,7 +6,8 @@ test("user should be authorized", () => {
         id: null,
         email: null,
         login: null,
-        isAuth: false
+        isAuth: false,
+        captcha: null
     }
 
     const action = setUserDataAC(11,"karabah", "gangubas", true)

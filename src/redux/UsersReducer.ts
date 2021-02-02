@@ -3,6 +3,7 @@ import {usersAPI} from "../api/api";
 import {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {Dispatch} from "redux";
 import {changeObjectInArray} from "../utils/helpers";
+import {setErrorAC} from "./AppReducer";
 
 export type UserType = {
     id: number
@@ -151,13 +152,26 @@ export type FakeType = ReturnType<typeof fakeAC>
 
 export type GetUsersThunkType = ThunkAction<void, AppStateType, { currentPage: number, pageSize: number }, ActionTypes>
 export const getUsersThunk = (currentPage: number, pageSize: number): GetUsersThunkType => {
-    return (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
+    return  async (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
         dispatch(toggleIsFetchingAC(true))
-        usersAPI.getUsers(currentPage, pageSize).then(data => {
+        try {
+            const data = await  usersAPI.getUsers(currentPage, pageSize)
             dispatch(toggleIsFetchingAC(false))
             dispatch(setUsersAC(data.items))
             dispatch(changeTotalUsersCountAC(data.totalCount))
-        })
+        } catch (e) {
+            dispatch(setErrorAC(e.message))
+            setTimeout(() => {
+                dispatch(setErrorAC(null))
+            }, 2000)
+        }
+
+
+        // usersAPI.getUsers(currentPage, pageSize).then(data => {
+        //     dispatch(toggleIsFetchingAC(false))
+        //     dispatch(setUsersAC(data.items))
+        //     dispatch(changeTotalUsersCountAC(data.totalCount))
+        // })
     }
 }
 export type ChangePageThunkType = ThunkAction<void, AppStateType, { newPage: number, pageSize: number }, ActionTypes>
@@ -178,9 +192,17 @@ const followUnfollowFlow = async (dispatch: Dispatch,
                                   actionCreator: (id: number) => FollowACType | UnfollowACType ) => {
 
     dispatch(toggleFollowingProgressAC(true, id))
-    const data = await APIMethod(id)
-    if (data.resultCode === 0) {
-        dispatch(actionCreator(id))
+
+    try {
+        const data = await APIMethod(id)
+        if (data.resultCode === 0) {
+            dispatch(actionCreator(id))
+        }
+    } catch (e) {
+        dispatch(setErrorAC(e.message))
+        setTimeout(() => {
+            dispatch(setErrorAC(null))
+        }, 2000)
     }
     dispatch(toggleFollowingProgressAC(false, id))
 }

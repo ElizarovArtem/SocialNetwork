@@ -3,6 +3,7 @@ import {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {profileAPI, usersAPI} from "../api/api";
 import {FormDataType} from "../Components/Profile/ProfileInfo/ProfileDataForm";
 import {stopSubmit} from "redux-form";
+import {setErrorAC} from "./AppReducer";
 
 export type AddPostActionType = ReturnType<typeof AddPostActionCreator>
 
@@ -19,7 +20,8 @@ let initialState: InitialStateType = {
         {id: 2, message: "Go alone", likesCount: 12},
     ],
     profile: null,
-    status: ""
+    status: "",
+    error: null
 }
 
 export type PostType = {
@@ -32,6 +34,7 @@ export type InitialStateType = {
     posts: Array<PostType>
     profile: null | ProfileType
     status: string
+    error: null | string
 }
 export type ProfileType = {
     aboutMe: string
@@ -70,10 +73,18 @@ export const ProfileReducer = (state: InitialStateType = initialState, action: A
             return {...state, status: action.status}
         }
         case "SET-USER-PHOTO": {
-            return {...state, profile: {...state.profile, photos: {...action.photoFile}} as ProfileType }
+            return {...state, profile: {...state.profile, photos: {...action.photoFile}} as ProfileType}
         }
         case "UPDATE-PROFILE":
-            return {...state, profile:<ProfileType>{...state.profile, ...action.profileData, contacts: {...action.profileData.contacts}}}
+            return {
+                ...state,
+                profile: <ProfileType>{
+                    ...state.profile, ...action.profileData,
+                    contacts: {...action.profileData.contacts}
+                }
+            }
+        case "SET-ERROR":
+            return  {...state, error: action.error}
         default:
             return state;
     }
@@ -89,14 +100,12 @@ export const setStatusAC = (status: string): SetStatusType => {
         status
     }
 }
-
 export const AddPostActionCreator = (newPostText: string) => {
     return {
         type: ADD_POST,
         newPostText
     } as const
 };
-
 export type SetUSerProfileType = {
     type: "SET-USER-PROFILE"
     profile: ProfileType
@@ -111,7 +120,7 @@ export type SetUserPhotoType = {
     type: "SET-USER-PHOTO"
     photoFile: { small: string, large: string }
 }
-export const setUserPhotoAC = (photoFile: {small: string, large: string}): SetUserPhotoType => {
+export const setUserPhotoAC = (photoFile: { small: string, large: string }): SetUserPhotoType => {
     return {
         type: SET_USER_PHOTO,
         photoFile
@@ -138,7 +147,6 @@ export const setUserProfileThunk = (userId: string): SetUserProfileThunkType => 
         dispatch(setUserProfileAC(data.data))
     }
 }
-
 export type SetStatusThunkType = ThunkAction<void, AppStateType, { userId: string }, ActionTypes>
 export const setStatusThunk = (userId: string): SetStatusThunkType => {
     return async (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
@@ -149,16 +157,23 @@ export const setStatusThunk = (userId: string): SetStatusThunkType => {
 export type UpdateStatusThunkType = ThunkAction<void, AppStateType, { status: string }, ActionTypes>
 export const updateStatusThunk = (status: string): UpdateStatusThunkType => {
     return async (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
-        const data = await profileAPI.updateStatus(status)
-        if (data.data.resultCode === 0) {
-            dispatch(setStatusAC(status))
+        try {
+            const data = await profileAPI.updateStatus(status)
+            if (data.data.resultCode === 0) {
+                dispatch(setStatusAC(status))
+            }
+        } catch (e) {
+            debugger
+            dispatch(setErrorAC(e.message))
+            setTimeout(() => {
+                dispatch(setErrorAC(null))
+            }, 2000)
         }
     }
 }
 export type UpdatePhotoThunkType = ThunkAction<void, AppStateType, { photoFile: string }, ActionTypes>
-export const updatePhotoThunk = (photoFile: File ): UpdatePhotoThunkType => {
+export const updatePhotoThunk = (photoFile: File): UpdatePhotoThunkType => {
     return async (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
-
         const res = await profileAPI.updatePhoto(photoFile)
         if (res.data.resultCode === 0) {
             dispatch(setUserPhotoAC(res.data.data.photos))
@@ -166,10 +181,10 @@ export const updatePhotoThunk = (photoFile: File ): UpdatePhotoThunkType => {
     }
 }
 export type UpdateProfileThunkType = ThunkAction<void, AppStateType, { profileData: FormDataType }, ActionTypes>
-export const updateProfileThunk = (profileData: FormDataType ): UpdateProfileThunkType => {
+export const updateProfileThunk = (profileData: FormDataType): UpdateProfileThunkType => {
     return async (dispatch: ThunkDispatch<AppStateType, unknown, ActionTypes>, getState: () => AppStateType) => {
         const userId = getState().auth.id
-        if(userId) {
+        if (userId) {
             profileData.userId = userId
         }
         const res = await profileAPI.updateProfile(profileData)
@@ -177,7 +192,7 @@ export const updateProfileThunk = (profileData: FormDataType ): UpdateProfileThu
             dispatch(setUserProfileThunk(`${userId}`) as any)
         } else {
             let message = res.data.messages.length > 0 ? res.data.messages[0] : "Some error"
-            let address = message.slice(30, message.length-1)
+            let address = message.slice(30, message.length - 1)
             dispatch(stopSubmit("profileData", {contacts: {[address.toLowerCase()]: message}}))
             return Promise.reject()
         }

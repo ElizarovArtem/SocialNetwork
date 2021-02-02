@@ -11,12 +11,14 @@ type ProfilePropsType = {
     isOwner: boolean
     updatePhotoThunk: (photoFile: File ) => void
     updateProfileThunk: (profileData: FormDataType) => void
+    error: string | null
 }
 
 export function Profile(props: ProfilePropsType) {
     return (
         <div>
             <ProfileInfo
+                error={props.error}
                 updatePhotoThunk={props.updatePhotoThunk}
                 updateProfileThunk={props.updateProfileThunk}
                 isOwner={props.isOwner}

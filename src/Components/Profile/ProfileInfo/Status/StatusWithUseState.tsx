@@ -1,8 +1,10 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
+import {Modal} from "../../../../Modals/Modal";
 
 type StatusPropsType = {
     status: string
     updateStatusThunk: (status: string) => void
+    error: string | null
 }
 
 export const StatusWithUseState = (props: StatusPropsType) => {
@@ -13,7 +15,10 @@ export const StatusWithUseState = (props: StatusPropsType) => {
         setStatus(props.status)
     },[props.status])
 
-    const activateEditMode = () => setEditMode(true)
+    const activateEditMode = () => {
+        setStatus(props.status)
+        setEditMode(true)
+    }
     const activateViewMode = () => {
         setEditMode(false)
         props.updateStatusThunk(status)
@@ -24,7 +29,7 @@ export const StatusWithUseState = (props: StatusPropsType) => {
         <div>
             {!editMode ?
             <div>
-                <b>Status: </b><span onDoubleClick={activateEditMode}>{status || "-----"}</span>
+                <b>Status: </b><span onDoubleClick={activateEditMode}>{props.status || "-----"}</span>
             </div>
             :
             <div>

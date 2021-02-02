@@ -48,6 +48,7 @@ class ProfileContainer extends React.Component<PropsType> {
     render() {
         return (
             <Profile
+                error={this.props.error}
                 isOwner={!this.props.match.params.userId}
                 updateProfileThunk={this.props.updateProfileThunk}
                 profile={this.props.profile}
@@ -63,6 +64,7 @@ type MapStateToPropsType = {
     profile: ProfileType | null
     status: string
     authorizedUserId: number | null
+    error: string | null
 }
 type MapDispatchToProps = {
     setUserProfileThunk: (userId: string) => void
@@ -75,7 +77,8 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
         profile: state.profilePage.profile,
         status: state.profilePage.status,
-        authorizedUserId: state.auth.id
+        authorizedUserId: state.auth.id,
+        error: state.app.error
     }
 }
 export const ProfileBigContainer = compose<React.ComponentType>(

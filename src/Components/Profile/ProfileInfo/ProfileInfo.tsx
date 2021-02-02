@@ -14,6 +14,7 @@ type ProfileInfoPropsType = {
     updateStatusThunk: (status: string) => void
     updateProfileThunk: (profileData: FormDataType) => void
     isOwner: boolean
+    error: string | null
 }
 
 export function ProfileInfo(props: ProfileInfoPropsType) {
@@ -49,7 +50,7 @@ export function ProfileInfo(props: ProfileInfoPropsType) {
                     <img src={props.profile.photos.large || userPhoto}/>
                     {props.isOwner && <input type="file" onChange={onSendPhoto}/>}
                 </div>
-                <StatusWithUseState status={props.status} updateStatusThunk={props.updateStatusThunk}/>
+                <StatusWithUseState error={props.error} status={props.status} updateStatusThunk={props.updateStatusThunk}/>
                 {isEditMode ?
                     <ProfileDataForm initialValues={props.profile} onSubmit={onSubmit} profile={props.profile}/>
                     :

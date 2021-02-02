@@ -16,7 +16,7 @@ import UsersReducer, {
 import {authReducer, SetCaptchaUrlType, SetUserDataType} from "./AuthReducer";
 import thunkMiddleware from "redux-thunk"
 import {reducer as formReducer} from 'redux-form';
-import {appReducer, SetInitializedType} from "./AppReducer";
+import {appReducer, SetErrorActionType, SetInitializedType} from "./AppReducer";
 
 
 let reducers = combineReducers({
@@ -55,3 +55,4 @@ export type ActionTypes = AddPostActionType
     | SetUserPhotoType
     | UpdateProfileType
     | SetCaptchaUrlType
+    | SetErrorActionType

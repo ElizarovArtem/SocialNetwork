@@ -25,7 +25,6 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
     switch (action.type) {
         case "SET_USER_DATA":
         case "SET-CAPTCHA-URL":
-            debugger
             return {
                 ...state,
                 ...action.payload
