@@ -1,7 +1,6 @@
 import {ContactsType, ProfileType} from "../../../redux/ProfileReducer";
 import s from "./ProfileInfo.module.css";
 import React from "react";
-import {Contact} from "./ProfileInfo";
 import {createField, Input, Textarea} from "../../common/FormsControls/FormsControls";
 import {InjectedFormProps, reduxForm} from "redux-form";
 import {required} from "../../../utils/validators/validators";

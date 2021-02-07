@@ -101,10 +101,10 @@ export const ConnectedApp = compose<React.ComponentType>(
 
 export const SamuraiJSApp = () => {
     return (
-        <HashRouter>
+        <BrowserRouter>
             <Provider store={store}>
                 <ConnectedApp/>
             </Provider>
-        </HashRouter>
+        </BrowserRouter>
     )
 }
