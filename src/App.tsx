@@ -30,7 +30,9 @@ class App extends React.Component<AppPropsType> {
         this.props.initializedThunk()
     }
 
+
     render() {
+        debugger
         if (!this.props.initialized) return <Preloader/>
 
         let top:number;
