@@ -21,6 +21,7 @@ type LocationType = {
 export type FollowACType = ReturnType<typeof followAC>
 export type UnfollowACType = ReturnType<typeof unfollowAC>
 export type SetUsersACType = ReturnType<typeof setUsersAC>
+export type SetFilterACType = ReturnType<typeof setFilterAC>
 
 const FOLLOW = "FOLLOW"
 const UNFOLLOW = "UNFOLLOW"
@@ -29,6 +30,7 @@ const CHANGE_CURRENT_PAGE = "CHANGE-CURRENT-PAGE"
 const CHANGE_TOTAL_USERS_COUNT = "CHANGE-TOTAL-USERS-COUNT"
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING"
 const TOGGLE_IS_FOLLOWING_PROGRESS = "TOGGLE_IS_FOLLOWING_PROGRESS"
+const SET_FILTER = "SET-FILTER"
 
 let initialState: InitialStateType = {
     users: [],
@@ -38,7 +40,8 @@ let initialState: InitialStateType = {
     isFetching: false,
     toggleFollowingProgress: false,
     followingUsers: [],
-    isFake: false
+    isFake: false,
+    filter: 'all'
 }
 
 export type InitialStateType = {
@@ -50,6 +53,7 @@ export type InitialStateType = {
     toggleFollowingProgress: boolean
     followingUsers: number[]
     isFake: boolean
+    filter: 'all' | 'followed'
 }
 
 export const UsersReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
@@ -82,6 +86,9 @@ export const UsersReducer = (state: InitialStateType = initialState, action: Act
             }
         case "SOME_FAKE":
             return {...state, isFake: !state.isFake}
+        case "SET-FILTER":
+            debugger
+            return {...state, filter: action.filter}
         default:
             return state
     }
@@ -97,6 +104,12 @@ export const unfollowAC = (ID: number) => {
     return {
         type: UNFOLLOW,
         userID: ID
+    } as const
+};
+export const setFilterAC = (filter: 'all' | 'followed') => {
+    return {
+        type: SET_FILTER,
+        filter: filter
     } as const
 };
 export const setUsersAC = (users: Array<UserType>) => {

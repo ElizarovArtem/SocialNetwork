@@ -43,14 +43,13 @@ type MessageFieldDataType = {
     newMessageBody: string
 }
 
-const maxLength50 = maxLengthCreator(50)
 
 export const MessageField = (props: InjectedFormProps<MessageFieldDataType>) => {
     return(
         <form onSubmit={props.handleSubmit}>
             <Field className={s.messageArea}
                    component={Textarea}
-                   validate={[required, maxLength50]}
+                   validate={[]}
                    name={"newMessageBody"}
                    placeholder={"Add new message"}
             />

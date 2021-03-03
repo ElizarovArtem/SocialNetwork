@@ -4,7 +4,7 @@ import {Users} from "./Users";
 import {AppStateType} from "../../redux/redux-store";
 import {
     changeCurrentPageAC, changePageThunk,
-    changeTotalUsersCountAC, followThunk, getUsersThunk, setUsersAC,
+    changeTotalUsersCountAC, followThunk, getUsersThunk, setFilterAC, setUsersAC,
     toggleIsFetchingAC, unfollowThunk,
     UserType
 } from "../../redux/UsersReducer";
@@ -42,6 +42,8 @@ export class UsersContainer extends React.Component<UsersContainerPropsType, {}>
                 followingUsers={this.props.followingUsers}
                 followThunk={this.props.followThunk}
                 unfollowThunk={this.props.unfollowThunk}
+                filter={this.props.filter}
+                setFilterAC={this.props.setFilterAC}
             />
         </>
     }
@@ -55,7 +57,8 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
         pageSize: selectPageSize(state),
         totalUsersCount: selectTotalUsersCount(state),
         isFetching: selectIsFetching(state),
-        followingUsers: selectFollowingUsers(state)
+        followingUsers: selectFollowingUsers(state),
+        filter: state.usersPage.filter
     }
 }
 
@@ -66,6 +69,7 @@ type MapStateToPropsType = {
     currentPage: number
     isFetching: boolean
     followingUsers: number[]
+    filter: 'all' | 'followed'
 }
 
 type MapDispatchToPropsType = {
@@ -77,6 +81,7 @@ type MapDispatchToPropsType = {
     changePageThunk: (newPage: number, pageSize: number) => void
     followThunk: (id: number) => void
     unfollowThunk: (id: number) => void
+    setFilterAC: (filter: 'all'| 'followed') => void
 }
 
 export const UserBigContainer = connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(mapStateToProps, {
@@ -87,5 +92,6 @@ export const UserBigContainer = connect<MapStateToPropsType, MapDispatchToPropsT
     getUsersThunk,
     changePageThunk,
     followThunk,
-    unfollowThunk
+    unfollowThunk,
+    setFilterAC
 })(UsersContainer)

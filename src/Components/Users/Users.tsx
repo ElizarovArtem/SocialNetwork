@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {UserType} from "../../redux/UsersReducer";
 import s from './users.module.css';
 import userPhoto from '../../assets/images/user-profile.png'
@@ -16,9 +16,16 @@ export type UsersPropsType = {
     followingUsers: number[]
     followThunk: (id: number) => void
     unfollowThunk: (id: number) => void
+    filter: 'all' | 'followed'
+    setFilterAC: (filter: 'all'| 'followed') => void
 }
 
 export function Users(props: UsersPropsType) {
+
+    let users = props.users
+    if(props.filter === 'followed') {
+        users = users.filter(u => u.followed === true)
+    }
 
     return (
         <div>
@@ -28,8 +35,12 @@ export function Users(props: UsersPropsType) {
                        portionSize={10}
                        currentPage={props.currentPage}
             />
+            <select onChange={(e) => props.setFilterAC(e.currentTarget.value as "all" | "followed")}>
+                {['all', 'followed']
+                    .map(i => <option >{i}</option>)}
+            </select>
             <div className={s.usersList}>
-                {props.users.map(u => <User
+                {users.map(u => <User
                     key={u.id}
                     user={u}
                     followingUsers={props.followingUsers}

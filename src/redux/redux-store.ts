@@ -9,7 +9,7 @@ import SidebarReducer from "./SidebarReducer";
 import UsersReducer, {
     ChangeCurrentPageType,
     ChangeTotalUsersCountType, FakeType,
-    FollowACType,
+    FollowACType, SetFilterACType,
     SetUsersACType, ToggleFollowingProgressType, ToggleIsFetchingType,
     UnfollowACType
 } from "./UsersReducer";
@@ -56,3 +56,4 @@ export type ActionTypes = AddPostActionType
     | UpdateProfileType
     | SetCaptchaUrlType
     | SetErrorActionType
+    | SetFilterACType
